@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미래 전쟁 (Future Wars) 한글판 소개 및 제작 비화</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --container-bg: rgba(22, 27, 34, 0.85);
+            --card-bg: #1f2937;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent-glow: #38bdf8;
+            --accent-orange: #fb923c;
+            --border-color: #374151;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(to bottom, rgba(11, 15, 25, 0.8) 0%, rgba(11, 15, 25, 0.95) 100%),
+                url('https://unsplash.com'); /* 미래지향적 네온 백그라운드 */
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            color: var(--text-main);
+            line-height: 1.7;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: var(--container-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px dashed var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px var(--accent-glow);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            color: var(--accent-glow);
+            font-weight: 500;
+        }
+
+        /* 반응형 이미지 배너 카드 */
+        .image-banner {
+            width: 100%;
+            height: 350px;
+            background-image: url('https://unsplash.com'); /* 레트로 게임/사이버펑크 컨셉 이미지 */
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+        }
+
+        .grid-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .info-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent-glow);
+        }
+
+        .info-card h3 {
+            color: var(--accent-glow);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #ffffff;
+            border-left: 4px solid var(--accent-glow);
+            padding-left: 12px;
+            margin: 35px 0 20px 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #d1d5db;
+        }
+
+        /* 한글 패치 제작 요약 타임라인 스타일 */
+        .localization-box {
+            background: rgba(31, 41, 55, 0.6);
+            border-left: 4px solid var(--accent-orange);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 30px;
+        }
+
+        .localization-box ul {
+            list-style: none;
+            padding-left: 5px;
+        }
+
+        .localization-box li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .localization-box li::before {
+            content: "⚡";
+            position: absolute;
+            left: 0;
+            color: var(--accent-orange);
+        }
+
+        .highlight-text {
+            color: var(--accent-orange);
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--accent-glow);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* 스마트폰/태블릿 대응 미디어 쿼리 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 25px 15px;
+                margin: 10px auto;
+            }
+            header h1 {
+                font-size: 1.8rem;
+            }
+            .image-banner {
+                height: 200px;
+            }
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>미래 전쟁 (Future Wars)</h1>
+        <p class="subtitle">시공간을 넘나드는 불후의 고전 어드벤처 명작</p>
+    </header>
+
+    <!-- 상단 비주얼 배너 구역 -->
+    <div class="image-banner"></div>
+
+    <div class="grid-info">
+        <div class="info-card">
+            <h3>🕹️ 장르 및 시스템</h3>
+            <p>1989년 출시작. 혁신적인 마우스 팝업 명령어 기반의 2D 포인트 앤 클릭 어드벤처.</p>
+        </div>
+        <div class="info-card">
+            <h3>🚀 스토리라인</h3>
+            <p>빌딩 유리창 청소부였던 주인공이 우연히 발견한 타임머신을 타고 인류를 구하는 SF 대여정.</p>
+        </div>
+        <div class="info-card">
+            <h3>🎨 그래픽 특징</h3>
+            <p>델핀 소프트웨어 특유의 시네마틱한 오프닝 연출과 정교한 도트 그래픽 예술의 정수.</p>
+        </div>
+    </div>
+
+    <div class="section-title">🌐 한글화 제작 요약</div>
+    <div class="localization-box">
+        <p style="font-weight: bold; margin-bottom: 15px; color: #ffffff;">⚙️ 한글화하는 사람들의 모임(한식구) 유저 번역 프로젝트 완료</p>
+        <ul>
+            <li><span class="highlight-text">기술적 한계 극복:</span> 80년대 말 특유의 까다로운 폰트 구조 및 텍스트 데이터 압축 방식을 구조 분석하여 한국어 출력 스크립트를 구현했습니다.</li>
+            <li><span class="highlight-text">자연스러운 문맥 번역:</span> SF 소설 특유의 복잡한 용어와 당대 어드벤처 게임의 불친절한 힌트 대사들을 국내 유저들이 온전히 몰입할 수 있도록 자연스러운 어조로 번역했습니다.</li>
+              <li><span class="highlight-text">고전 명작의 보존:</span> 국내에 널리 알려지지 못했던 유럽형 시네마틱 어드벤처 게임의 한글 플레이를 실현함으로써, 고전 게임 아카이빙 가치를 극대화했습니다.</li>
+        </ul>
+    </div>
+
+    <div class="section-title">💡 플레이어 가이드</div>
+    <p>
+        게임은 픽셀 단위로 아이템을 찾아내야 하는 높은 난이도를 자랑합니다. 
+        한글 패치 덕분에 대사 힌트를 직관적으로 이해할 수 있어 길을 잃을 염려가 줄어들었으나, 
+        중요한 구간마다 반드시 세이브를 생활화하는 것을 권장합니다.
+    </p>
+
+    <footer>
+        <p>본 페이지는 통해 배포 중입니다.</p>
+    </footer>
+</div>
+
+</body>
+</html>
