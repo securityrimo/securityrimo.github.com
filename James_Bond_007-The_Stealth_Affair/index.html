@@ -412,6 +412,91 @@
             color: var(--muted);
         }
         footer strong { color: var(--gold); }
+
+        /* ── 스토리 장면 ── */
+        .story-scenes {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .scene-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background: var(--surface);
+        }
+        .scene-block.reverse {
+            direction: rtl;
+        }
+        .scene-block.reverse > * {
+            direction: ltr;
+        }
+        @media (max-width: 600px) {
+            .scene-block, .scene-block.reverse {
+                grid-template-columns: 1fr;
+                direction: ltr;
+            }
+        }
+        .scene-svg-wrap {
+            overflow: hidden;
+            background: #060810;
+        }
+        .scene-svg-wrap svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .scene-info {
+            padding: 22px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: var(--surface2);
+            border-left: 1px solid var(--border);
+        }
+        .scene-block.reverse .scene-info {
+            border-left: none;
+            border-right: 1px solid var(--border);
+        }
+        @media (max-width: 600px) {
+            .scene-info { border-left: none; border-top: 1px solid var(--border); }
+            .scene-block.reverse .scene-info { border-right: none; border-top: 1px solid var(--border); }
+        }
+        .scene-num {
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 6px;
+        }
+        .scene-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        .scene-desc {
+            font-size: 0.88rem;
+            color: var(--text);
+            line-height: 1.7;
+        }
+        .scene-desc strong { color: var(--gold-lt); }
+        .scene-tag {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            padding: 3px 8px;
+        }
     </style>
 </head>
 <body>
@@ -515,6 +600,424 @@
                 </div>
             </div>
         </div>
+
+        <!-- ── 스토리 핵심 장면 5 ── -->
+        <div class="section">
+            <div class="section-title">스토리 핵심 장면</div>
+            <div class="story-scenes">
+
+                <!-- 장면 1: CIA 브리핑 -->
+                <div class="scene-block">
+                    <div class="scene-svg-wrap">
+                        <svg viewBox="0 0 460 270" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <radialGradient id="s1bg" cx="50%" cy="40%" r="60%">
+                                    <stop offset="0%" stop-color="#1a1208"/>
+                                    <stop offset="100%" stop-color="#060402"/>
+                                </radialGradient>
+                                <linearGradient id="s1desk" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#3a2a10"/>
+                                    <stop offset="100%" stop-color="#1e1608"/>
+                                </linearGradient>
+                                <filter id="s1glow">
+                                    <feGaussianBlur stdDeviation="3" result="blur"/>
+                                    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                </filter>
+                            </defs>
+                            <!-- 배경 -->
+                            <rect width="460" height="270" fill="url(#s1bg)"/>
+                            <!-- 나무 패널 벽 -->
+                            <rect x="0" y="0" width="460" height="185" fill="#1e1408"/>
+                            <line x1="0" y1="40" x2="460" y2="40" stroke="#2a1c0a" stroke-width="1"/>
+                            <line x1="0" y1="80" x2="460" y2="80" stroke="#2a1c0a" stroke-width="1"/>
+                            <line x1="0" y1="120" x2="460" y2="120" stroke="#2a1c0a" stroke-width="1"/>
+                            <!-- 창 왼쪽 -->
+                            <rect x="18" y="15" width="90" height="110" fill="#050810" stroke="#3a2a10" stroke-width="2"/>
+                            <line x1="63" y1="15" x2="63" y2="125" stroke="#3a2a10" stroke-width="1"/>
+                            <line x1="18" y1="62" x2="108" y2="62" stroke="#3a2a10" stroke-width="1"/>
+                            <rect x="20" y="17" width="41" height="43" fill="#0a0e1a" opacity="0.8"/>
+                            <rect x="64" y="17" width="42" height="43" fill="#0a0e1a" opacity="0.7"/>
+                            <!-- 창 오른쪽 -->
+                            <rect x="352" y="15" width="90" height="110" fill="#050810" stroke="#3a2a10" stroke-width="2"/>
+                            <line x1="397" y1="15" x2="397" y2="125" stroke="#3a2a10" stroke-width="1"/>
+                            <line x1="352" y1="62" x2="442" y2="62" stroke="#3a2a10" stroke-width="1"/>
+                            <rect x="354" y="17" width="41" height="43" fill="#0a0e1a" opacity="0.8"/>
+                            <rect x="399" y="17" width="41" height="43" fill="#0a0e1a" opacity="0.7"/>
+                            <!-- 국기 -->
+                            <rect x="200" y="10" width="60" height="40" fill="#0a1a50"/>
+                            <rect x="200" y="10" width="60" height="13" fill="#cc0000"/>
+                            <rect x="200" y="37" width="60" height="13" fill="#cc0000"/>
+                            <rect x="196" y="8" width="4" height="120" fill="#5a3e20"/>
+                            <!-- 책상 -->
+                            <rect x="60" y="155" width="340" height="22" fill="url(#s1desk)" rx="2"/>
+                            <rect x="70" y="175" width="12" height="30" fill="#2a1c08"/>
+                            <rect x="378" y="175" width="12" height="30" fill="#2a1c08"/>
+                            <!-- 파일 서류들 -->
+                            <rect x="80" y="140" width="55" height="20" fill="#e8e0cc" rx="1" transform="rotate(-4,107,150)"/>
+                            <rect x="85" y="138" width="55" height="20" fill="#d8d0bc" rx="1" transform="rotate(-1,112,148)"/>
+                            <!-- 인물 A: M 국장 (앉아있음) -->
+                            <ellipse cx="230" cy="128" rx="18" ry="20" fill="#c0906a"/>
+                            <rect x="212" y="148" width="36" height="32" fill="#2a2a2a"/>
+                            <!-- 넥타이 -->
+                            <polygon points="230,148 226,168 230,172 234,168" fill="#8a2020"/>
+                            <!-- 인물 B: 본드 (서있음) -->
+                            <ellipse cx="330" cy="118" rx="16" ry="19" fill="#c8a878"/>
+                            <rect x="314" y="137" width="32" height="48" fill="#101010"/>
+                            <!-- 본드 넥타이 -->
+                            <polygon points="330,137 326,155 330,159 334,155" fill="#c9a84c"/>
+                            <!-- 스크린/지도 -->
+                            <rect x="145" y="35" width="170" height="105" fill="#080c18" stroke="#2a3a6a" stroke-width="2"/>
+                            <!-- 지도 윤곽: 쿠바 섬 모양 단순화 -->
+                            <path d="M168,105 Q195,72 230,68 Q260,66 290,80 Q300,95 285,108 Q255,120 215,118 Q190,115 168,105 Z" fill="#1a3a1a" stroke="#2a6a2a" stroke-width="1"/>
+                            <!-- 타겟 마커 -->
+                            <circle cx="240" cy="92" r="8" fill="none" stroke="#e05c5c" stroke-width="1.5"/>
+                            <line x1="236" y1="92" x2="244" y2="92" stroke="#e05c5c" stroke-width="1"/>
+                            <line x1="240" y1="88" x2="240" y2="96" stroke="#e05c5c" stroke-width="1"/>
+                            <circle cx="240" cy="92" r="2" fill="#e05c5c"/>
+                            <!-- 텍스트 라벨 -->
+                            <text x="247" y="88" fill="#e05c5c" font-size="7" font-family="monospace">CUBA</text>
+                            <!-- 대사 박스 -->
+                            <rect x="15" y="200" width="430" height="58" fill="#1a1004" stroke="#c9a84c" stroke-width="1.2" rx="3"/>
+                            <text x="28" y="220" fill="#c9a84c" font-size="9" font-family="monospace" letter-spacing="1">M 국장</text>
+                            <text x="28" y="237" fill="#ffffff" font-size="10.5" font-family="'Segoe UI',sans-serif">"본드 요원, 쿠바에서 최첨단 스텔스기가 탈취됐네.</text>
+                            <text x="28" y="252" fill="#ffffff" font-size="10.5" font-family="'Segoe UI',sans-serif">자네만이 그것을 되찾을 수 있어."</text>
+                        </svg>
+                    </div>
+                    <div class="scene-info">
+                        <div class="scene-num">Scene 01 · 발단</div>
+                        <div class="scene-title">CIA 본부 브리핑 — 워싱턴 D.C.</div>
+                        <div class="scene-desc">
+                            <strong>존 스틸(제임스 본드)</strong>은 워싱턴 CIA 본부에서 긴급 소집을 받는다. 쿠바 공군이 미국의 최첨단 스텔스 전투기를 탈취했다는 충격적인 보고. M 국장은 현존하는 모든 레이더를 무력화하는 이 스텔스기가 적의 손에 남을 경우 세계 안보의 균형이 무너질 것이라 경고한다.
+                        </div>
+                        <span class="scene-tag">📍 워싱턴 D.C. · 임무 시작</span>
+                    </div>
+                </div>
+
+                <!-- 장면 2: 공항 잠입 -->
+                <div class="scene-block reverse">
+                    <div class="scene-svg-wrap">
+                        <svg viewBox="0 0 460 270" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="s2sky" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#060c1a"/>
+                                    <stop offset="60%" stop-color="#0a1830"/>
+                                    <stop offset="100%" stop-color="#1a2840"/>
+                                </linearGradient>
+                                <radialGradient id="s2lamp1" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#ffcc55" stop-opacity="0.9"/>
+                                    <stop offset="100%" stop-color="#ff8800" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
+                            <!-- 야간 배경 -->
+                            <rect width="460" height="270" fill="url(#s2sky)"/>
+                            <!-- 별들 -->
+                            <circle cx="40" cy="20" r="1" fill="white" opacity="0.7"/>
+                            <circle cx="100" cy="35" r="1" fill="white" opacity="0.5"/>
+                            <circle cx="180" cy="12" r="1" fill="white" opacity="0.8"/>
+                            <circle cx="280" cy="28" r="1" fill="white" opacity="0.6"/>
+                            <circle cx="380" cy="15" r="1.2" fill="white" opacity="0.9"/>
+                            <circle cx="420" cy="40" r="1" fill="white" opacity="0.5"/>
+                            <!-- 공항 활주로 원경 -->
+                            <rect x="0" y="175" width="460" height="95" fill="#0e1008"/>
+                            <!-- 활주로 -->
+                            <rect x="0" y="188" width="460" height="30" fill="#141610"/>
+                            <!-- 활주로 중앙선 -->
+                            <rect x="30" y="200" width="50" height="4" fill="#c9a84c" opacity="0.6"/>
+                            <rect x="120" y="200" width="50" height="4" fill="#c9a84c" opacity="0.6"/>
+                            <rect x="210" y="200" width="50" height="4" fill="#c9a84c" opacity="0.6"/>
+                            <rect x="300" y="200" width="50" height="4" fill="#c9a84c" opacity="0.6"/>
+                            <rect x="390" y="200" width="50" height="4" fill="#c9a84c" opacity="0.6"/>
+                            <!-- 활주로 등 -->
+                            <circle cx="20" cy="220" r="3" fill="#22aaff" opacity="0.8"/>
+                            <circle cx="90" cy="220" r="3" fill="#22aaff" opacity="0.8"/>
+                            <circle cx="160" cy="220" r="3" fill="#22aaff" opacity="0.8"/>
+                            <circle cx="230" cy="220" r="3" fill="#22aaff" opacity="0.8"/>
+                            <circle cx="300" cy="220" r="3" fill="#22aaff" opacity="0.8"/>
+                            <circle cx="370" cy="220" r="3" fill="#22aaff" opacity="0.8"/>
+                            <circle cx="440" cy="220" r="3" fill="#22aaff" opacity="0.8"/>
+                            <!-- 공항 터미널 건물 -->
+                            <rect x="50" y="90" width="360" height="90" fill="#1a1c1e" stroke="#2a2e34" stroke-width="1"/>
+                            <rect x="50" y="80" width="360" height="15" fill="#242830"/>
+                            <!-- 터미널 창문들 -->
+                            <rect x="70"  y="100" width="40" height="28" fill="#1a2a40" stroke="#2a3a50" stroke-width="1"/>
+                            <rect x="125" y="100" width="40" height="28" fill="#1a2a40" stroke="#2a3a50" stroke-width="1"/>
+                            <rect x="180" y="100" width="40" height="28" fill="#2a3a50" stroke="#2a3a50" stroke-width="1"/>
+                            <rect x="235" y="100" width="40" height="28" fill="#1a2a40" stroke="#2a3a50" stroke-width="1"/>
+                            <rect x="290" y="100" width="40" height="28" fill="#1a2a40" stroke="#2a3a50" stroke-width="1"/>
+                            <rect x="345" y="100" width="40" height="28" fill="#2a3a50" stroke="#2a3a50" stroke-width="1"/>
+                            <!-- 가로등 -->
+                            <rect x="148" y="65" width="4" height="90" fill="#3a3a3a"/>
+                            <ellipse cx="150" cy="65" rx="14" ry="5" fill="#2a2a2a"/>
+                            <ellipse cx="150" cy="62" rx="25" ry="15" fill="url(#s2lamp1)" opacity="0.5"/>
+                            <rect x="308" y="65" width="4" height="90" fill="#3a3a3a"/>
+                            <ellipse cx="310" cy="65" rx="14" ry="5" fill="#2a2a2a"/>
+                            <ellipse cx="310" cy="62" rx="25" ry="15" fill="url(#s2lamp1)" opacity="0.5"/>
+                            <!-- 본드 실루엣 (잠입 포즈) -->
+                            <ellipse cx="230" cy="155" rx="11" ry="13" fill="#c8a878"/>
+                            <rect x="218" y="168" width="24" height="32" fill="#0a0a0a"/>
+                            <!-- 가방 -->
+                            <rect x="240" y="178" width="14" height="12" fill="#1a1a1a" rx="2"/>
+                            <!-- 항공기 실루엣 원경 -->
+                            <path d="M350,145 L420,138 L440,142 L420,148 L350,155 Z" fill="#1a1a2a"/>
+                            <path d="M380,138 L400,118 L405,120 L388,140 Z" fill="#1a1a2a"/>
+                            <path d="M370,150 L375,165 L378,165 L375,150 Z" fill="#1a1a2a"/>
+                            <!-- 대사 박스 -->
+                            <rect x="15" y="200" width="430" height="58" fill="#0a1020" stroke="#3a6ad0" stroke-width="1.2" rx="3"/>
+                            <text x="28" y="220" fill="#3a8aff" font-size="9" font-family="monospace" letter-spacing="1">나레이션</text>
+                            <text x="28" y="237" fill="#ffffff" font-size="10.5" font-family="'Segoe UI',sans-serif">파나마의 밤, 공항에는 수상한 움직임이 포착된다.</text>
+                            <text x="28" y="252" fill="#ffffff" font-size="10.5" font-family="'Segoe UI',sans-serif">스텔스기의 흔적은 이곳에서 시작된다.</text>
+                        </svg>
+                    </div>
+                    <div class="scene-info">
+                        <div class="scene-num">Scene 02 · 잠입</div>
+                        <div class="scene-title">야간 공항 침투 — 파나마</div>
+                        <div class="scene-desc">
+                            단서를 쫓아 파나마에 도착한 본드. 어둠 속 공항에서 첫 번째 잠입이 시작된다. 가짜 신분증과 변장으로 검문을 통과하고, 격납고 구역에 숨겨진 <strong>스텔스기 이송 기록</strong>을 입수한다. 경비원과의 첫 대결, 위험한 선택의 연속.
+                        </div>
+                        <span class="scene-tag">📍 파나마 공항 · 야간 잠입</span>
+                    </div>
+                </div>
+
+                <!-- 장면 3: 수중 잠수 -->
+                <div class="scene-block">
+                    <div class="scene-svg-wrap">
+                        <svg viewBox="0 0 460 270" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="s3water" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#0a2a3a"/>
+                                    <stop offset="100%" stop-color="#020c14"/>
+                                </linearGradient>
+                                <radialGradient id="s3light" cx="50%" cy="20%" r="60%">
+                                    <stop offset="0%" stop-color="#1a6a8a" stop-opacity="0.5"/>
+                                    <stop offset="100%" stop-color="transparent"/>
+                                </radialGradient>
+                                <filter id="s3blur">
+                                    <feGaussianBlur stdDeviation="1.5"/>
+                                </filter>
+                            </defs>
+                            <!-- 수중 배경 -->
+                            <rect width="460" height="270" fill="url(#s3water)"/>
+                            <rect width="460" height="270" fill="url(#s3light)"/>
+                            <!-- 수면 효과 -->
+                            <path d="M0,0 Q115,18 230,8 Q345,0 460,12 L460,0 Z" fill="#0d3a4a" opacity="0.7"/>
+                            <!-- 빛 굴절 -->
+                            <path d="M180,0 L160,80 L200,80 Z" fill="#1a8aaa" opacity="0.06"/>
+                            <path d="M260,0 L235,70 L285,70 Z" fill="#1a8aaa" opacity="0.06"/>
+                            <path d="M330,0 L315,60 L360,60 Z" fill="#1a8aaa" opacity="0.05"/>
+                            <!-- 해저 바닥 -->
+                            <rect x="0" y="230" width="460" height="40" fill="#0a1810"/>
+                            <ellipse cx="80" cy="230" rx="55" ry="10" fill="#0e1e14"/>
+                            <ellipse cx="230" cy="235" rx="80" ry="10" fill="#0c1c12"/>
+                            <ellipse cx="390" cy="228" rx="65" ry="9" fill="#0e1e14"/>
+                            <!-- 산호초 -->
+                            <path d="M60,230 Q55,210 70,205 Q75,210 65,215 Q80,200 85,210 Q90,205 88,220 Q80,215 75,225 Z" fill="#1a5a3a"/>
+                            <path d="M380,230 Q378,212 390,208 Q393,215 386,218 Q398,205 400,215 Q403,210 401,222 Q395,218 390,226 Z" fill="#1a5a3a"/>
+                            <!-- 물고기들 -->
+                            <ellipse cx="110" cy="140" rx="9" ry="5" fill="#e8a040" opacity="0.8"/>
+                            <polygon points="119,140 125,136 125,144" fill="#e8a040" opacity="0.8"/>
+                            <ellipse cx="350" cy="100" rx="7" ry="4" fill="#60a8e0" opacity="0.7"/>
+                            <polygon points="357,100 362,97 362,103" fill="#60a8e0" opacity="0.7"/>
+                            <!-- 해저 기지 구조물 -->
+                            <rect x="280" y="145" width="140" height="85" fill="#1a1a2a" stroke="#2a2a4a" stroke-width="2" rx="4"/>
+                            <rect x="300" y="158" width="28" height="20" fill="#1a3a5a" stroke="#2a4a6a" stroke-width="1"/>
+                            <rect x="345" y="158" width="28" height="20" fill="#1a3a5a" stroke="#2a4a6a" stroke-width="1"/>
+                            <rect x="390" y="158" width="20" height="20" fill="#1a3a5a" stroke="#2a4a6a" stroke-width="1"/>
+                            <!-- 파이프 -->
+                            <rect x="270" y="170" width="14" height="60" fill="#1a1a2a" stroke="#2a2a3a" stroke-width="1"/>
+                            <!-- 잠수하는 본드 -->
+                            <ellipse cx="165" cy="120" rx="10" ry="12" fill="#c8a878"/>
+                            <!-- 잠수 마스크 -->
+                            <ellipse cx="165" cy="118" rx="10" ry="9" fill="#1a3a5a" opacity="0.8"/>
+                            <ellipse cx="165" cy="117" rx="7" ry="6" fill="#2a5a7a" opacity="0.6"/>
+                            <!-- 잠수복 -->
+                            <rect x="155" y="132" width="20" height="40" fill="#0a1a2a"/>
+                            <!-- 수중 스쿠터 -->
+                            <rect x="120" y="145" width="40" height="14" fill="#1a1a2a" rx="5"/>
+                            <circle cx="120" cy="152" r="7" fill="#0a0a1a" stroke="#2a2a3a" stroke-width="1"/>
+                            <circle cx="120" cy="152" r="3" fill="#1a3a5a"/>
+                            <!-- 기포들 -->
+                            <circle cx="172" cy="105" r="2" fill="white" opacity="0.3"/>
+                            <circle cx="168" cy="95" r="1.5" fill="white" opacity="0.25"/>
+                            <circle cx="175" cy="88" r="1" fill="white" opacity="0.2"/>
+                            <!-- 대사 박스 -->
+                            <rect x="15" y="200" width="250" height="58" fill="#050e18" stroke="#1a5a7a" stroke-width="1.2" rx="3"/>
+                            <text x="28" y="220" fill="#3aaccc" font-size="9" font-family="monospace" letter-spacing="1">나레이션</text>
+                            <text x="28" y="237" fill="#ffffff" font-size="10.5" font-family="'Segoe UI',sans-serif">해저 기지로 통하는 유일한 통로.</text>
+                            <text x="28" y="252" fill="#ffffff" font-size="10.5" font-family="'Segoe UI',sans-serif">산소는 충분하지 않다.</text>
+                        </svg>
+                    </div>
+                    <div class="scene-info">
+                        <div class="scene-num">Scene 03 · 위기</div>
+                        <div class="scene-title">수중 침투 — 해저 비밀 기지</div>
+                        <div class="scene-desc">
+                            단서는 카리브해 해저 비밀 기지를 가리킨다. 스쿠버 장비를 갖춘 본드는 산호초 사이를 헤치며 깊은 바닷속으로 잠수한다. 산소가 떨어져가는 긴박한 상황 속에서 <strong>기지의 잠금 해제 장치</strong>를 찾아야 한다. 시간과의 싸움.
+                        </div>
+                        <span class="scene-tag">📍 카리브해 해저 · 타임 리밋</span>
+                    </div>
+                </div>
+
+                <!-- 장면 4: 기지 내부 대결 -->
+                <div class="scene-block reverse">
+                    <div class="scene-svg-wrap">
+                        <svg viewBox="0 0 460 270" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <radialGradient id="s4amb" cx="50%" cy="50%" r="55%">
+                                    <stop offset="0%" stop-color="#1a0808"/>
+                                    <stop offset="100%" stop-color="#060202"/>
+                                </radialGradient>
+                                <radialGradient id="s4alarm" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#cc2020" stop-opacity="0.4"/>
+                                    <stop offset="100%" stop-color="transparent"/>
+                                </radialGradient>
+                            </defs>
+                            <!-- 배경 -->
+                            <rect width="460" height="270" fill="url(#s4amb)"/>
+                            <!-- 경보 빛 오버레이 -->
+                            <rect width="460" height="270" fill="url(#s4alarm)"/>
+                            <!-- 복도 원근감 -->
+                            <rect x="0" y="0" width="460" height="180" fill="#1a0a0a"/>
+                            <!-- 천장 파이프 -->
+                            <rect x="0" y="10" width="460" height="12" fill="#1e1010"/>
+                            <rect x="60" y="0" width="8" height="180" fill="#181010"/>
+                            <rect x="200" y="0" width="8" height="180" fill="#181010"/>
+                            <rect x="350" y="0" width="8" height="180" fill="#181010"/>
+                            <!-- 경보 등 -->
+                            <circle cx="100" cy="20" r="10" fill="#cc1010" opacity="0.8"/>
+                            <circle cx="100" cy="20" r="6" fill="#ff3030"/>
+                            <circle cx="280" cy="20" r="10" fill="#cc1010" opacity="0.8"/>
+                            <circle cx="280" cy="20" r="6" fill="#ff3030"/>
+                            <!-- 경보 빛 원형 -->
+                            <circle cx="100" cy="20" r="25" fill="none" stroke="#cc1010" stroke-width="2" opacity="0.3"/>
+                            <circle cx="280" cy="20" r="25" fill="none" stroke="#cc1010" stroke-width="2" opacity="0.3"/>
+                            <!-- 바닥 -->
+                            <rect x="0" y="175" width="460" height="95" fill="#100808"/>
+                            <!-- 원근 선 -->
+                            <line x1="0" y1="175" x2="460" y2="175" stroke="#2a0a0a" stroke-width="1"/>
+                            <!-- 금속 상자들 -->
+                            <rect x="20" y="130" width="50" height="48" fill="#1a0e0e" stroke="#3a1a1a" stroke-width="1"/>
+                            <rect x="25" y="135" width="18" height="12" fill="#2a1a1a"/>
+                            <!-- 적 경비원 실루엣 (왼쪽) -->
+                            <ellipse cx="130" cy="110" rx="13" ry="15" fill="#8a6050"/>
+                            <rect x="117" y="125" width="26" height="45" fill="#2a1010"/>
+                            <!-- 총 -->
+                            <rect x="143" y="132" width="22" height="6" fill="#1a1a1a" rx="1"/>
+                            <!-- 총구 화염 -->
+                            <polygon points="165,132 175,128 175,138 165,134" fill="#ff8800" opacity="0.8"/>
+                            <!-- 본드 (오른쪽, 엄폐) -->
+                            <rect x="330" y="120" width="40" height="60" fill="#151010" rx="2"/>
+                            <ellipse cx="345" cy="115" rx="13" ry="15" fill="#c8a878"/>
+                            <rect x="332" y="130" width="28" height="42" fill="#0a0a0a"/>
+                            <!-- 본드 총 -->
+                            <rect x="310" y="137" width="24" height="5" fill="#2a2a2a" rx="1"/>
+                            <!-- 탄흔 -->
+                            <circle cx="215" cy="95" r="3" fill="#3a1a1a"/>
+                            <circle cx="220" cy="108" r="2" fill="#3a1a1a"/>
+                            <circle cx="208" cy="120" r="2.5" fill="#3a1a1a"/>
+                            <!-- 경보 텍스트 -->
+                            <text x="170" y="55" fill="#cc2020" font-size="11" font-family="monospace" text-anchor="middle" letter-spacing="3" opacity="0.9">! INTRUDER ALERT !</text>
+                            <!-- 대사 박스 -->
+                            <rect x="15" y="200" width="430" height="58" fill="#180808" stroke="#8a1010" stroke-width="1.2" rx="3"/>
+                            <text x="28" y="220" fill="#cc3030" font-size="9" font-family="monospace" letter-spacing="1">경비대장</text>
+                            <text x="28" y="237" fill="#ffffff" font-size="10.5" font-family="'Segoe UI',sans-serif">"침입자를 사살하라! 스텔스기를 지켜라!"</text>
+                            <text x="28" y="252" fill="#aaaaaa" font-size="10" font-family="'Segoe UI',sans-serif">기지 전체에 경보가 울린다. 퇴로는 없다.</text>
+                        </svg>
+                    </div>
+                    <div class="scene-info">
+                        <div class="scene-num">Scene 04 · 절정</div>
+                        <div class="scene-title">기지 내부 총격전 — 경보 발령</div>
+                        <div class="scene-desc">
+                            해저 기지 내부 침투에 성공했지만 경보가 울린다. 무장 경비대가 사방에서 몰려오고, 좁은 복도에서 총격전이 벌어진다. <strong>스텔스기가 격납된 구역</strong>까지 단 몇 걸음. 지금까지 입수한 모든 아이템과 퍼즐 해법이 여기서 시험된다.
+                        </div>
+                        <span class="scene-tag">📍 해저 기지 · 최종 대결 직전</span>
+                    </div>
+                </div>
+
+                <!-- 장면 5: 탈출 엔딩 -->
+                <div class="scene-block">
+                    <div class="scene-svg-wrap">
+                        <svg viewBox="0 0 460 270" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="s5sky" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#0a0408"/>
+                                    <stop offset="40%" stop-color="#1a0a18"/>
+                                    <stop offset="100%" stop-color="#2a1428"/>
+                                </linearGradient>
+                                <radialGradient id="s5moon" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#f0e8c0"/>
+                                    <stop offset="70%" stop-color="#d0c890"/>
+                                    <stop offset="100%" stop-color="#b0a870"/>
+                                </radialGradient>
+                                <radialGradient id="s5expl" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#ffcc00" stop-opacity="1"/>
+                                    <stop offset="40%" stop-color="#ff6600" stop-opacity="0.8"/>
+                                    <stop offset="100%" stop-color="#cc2200" stop-opacity="0"/>
+                                </radialGradient>
+                                <linearGradient id="s5sea" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#0a1a2a"/>
+                                    <stop offset="100%" stop-color="#050e18"/>
+                                </linearGradient>
+                            </defs>
+                            <!-- 밤하늘 -->
+                            <rect width="460" height="270" fill="url(#s5sky)"/>
+                            <!-- 별 -->
+                            <circle cx="30" cy="25" r="1" fill="white" opacity="0.6"/>
+                            <circle cx="80" cy="12" r="1.2" fill="white" opacity="0.8"/>
+                            <circle cx="150" cy="30" r="1" fill="white" opacity="0.5"/>
+                            <circle cx="340" cy="18" r="1.5" fill="white" opacity="0.9"/>
+                            <circle cx="410" cy="35" r="1" fill="white" opacity="0.6"/>
+                            <circle cx="450" cy="10" r="1.2" fill="white" opacity="0.7"/>
+                            <!-- 달 -->
+                            <circle cx="400" cy="55" r="28" fill="url(#s5moon)"/>
+                            <circle cx="410" cy="48" r="22" fill="#1a0a18" opacity="0.15"/>
+                            <!-- 달 반사 (바다) -->
+                            <path d="M375,175 Q390,168 405,175 Q398,190 390,200 Q382,190 375,175 Z" fill="#d0c890" opacity="0.2"/>
+                            <!-- 바다 -->
+                            <rect x="0" y="165" width="460" height="105" fill="url(#s5sea)"/>
+                            <!-- 파도 라인 -->
+                            <path d="M0,170 Q50,162 100,170 Q150,178 200,170 Q250,162 300,170 Q350,178 400,170 Q430,164 460,170" stroke="#1a3a5a" stroke-width="1.5" fill="none"/>
+                            <path d="M0,182 Q60,175 120,182 Q180,189 240,182 Q300,175 360,182 Q410,189 460,182" stroke="#162a3a" stroke-width="1" fill="none"/>
+                            <!-- 폭발 (기지 침몰) -->
+                            <ellipse cx="100" cy="168" rx="45" ry="20" fill="url(#s5expl)"/>
+                            <ellipse cx="100" cy="158" rx="30" ry="25" fill="url(#s5expl)" opacity="0.7"/>
+                            <ellipse cx="95" cy="148" rx="20" ry="18" fill="#ffcc00" opacity="0.6"/>
+                            <!-- 연기 -->
+                            <ellipse cx="95" cy="130" rx="18" ry="14" fill="#2a1a1a" opacity="0.8"/>
+                            <ellipse cx="88" cy="112" rx="14" ry="12" fill="#1a1010" opacity="0.7"/>
+                            <ellipse cx="100" cy="98" rx="12" ry="10" fill="#2a1a1a" opacity="0.5"/>
+                            <!-- 스텔스기 실루엣 (비행 중) -->
+                            <path d="M240,75 L330,68 L360,72 L330,78 L240,85 Z" fill="#1a1a2a"/>
+                            <path d="M270,68 L285,48 L292,50 L278,70 Z" fill="#1a1a2a"/>
+                            <path d="M262,82 L267,98 L272,97 L268,82 Z" fill="#1a1a2a"/>
+                            <!-- 스텔스기 엔진 빛 -->
+                            <ellipse cx="360" cy="75" rx="6" ry="3" fill="#ff8800" opacity="0.8"/>
+                            <ellipse cx="360" cy="75" rx="10" ry="5" fill="#ff6600" opacity="0.3"/>
+                            <!-- 탈출 보트 -->
+                            <ellipse cx="300" cy="180" rx="38" ry="10" fill="#c8a84c"/>
+                            <path d="M262,180 Q300,165 338,180 Z" fill="#a88838"/>
+                            <!-- 본드 + 여성 실루엣 -->
+                            <ellipse cx="290" cy="168" rx="8" ry="10" fill="#c8a878"/>
+                            <rect x="282" y="178" width="16" height="12" fill="#101010"/>
+                            <ellipse cx="312" cy="166" rx="8" ry="10" fill="#d4a0a0"/>
+                            <rect x="304" y="176" width="16" height="14" fill="#3a1a3a"/>
+                            <!-- 대사 박스 -->
+                            <rect x="15" y="205" width="430" height="54" fill="#080410" stroke="#c9a84c" stroke-width="1.2" rx="3"/>
+                            <text x="28" y="224" fill="#c9a84c" font-size="9" font-family="monospace" letter-spacing="1">나레이션</text>
+                            <text x="28" y="241" fill="#ffffff" font-size="10.5" font-family="'Segoe UI',sans-serif">스텔스기는 회수됐다. 기지는 바다 속으로 가라앉는다.</text>
+                            <text x="28" y="256" fill="#c9a84c" font-size="10.5" font-family="'Segoe UI',sans-serif">임무 완료 — The Stealth Affair 終.</text>
+                        </svg>
+                    </div>
+                    <div class="scene-info">
+                        <div class="scene-num">Scene 05 · 결말</div>
+                        <div class="scene-title">탈출과 임무 완료 — 카리브해의 밤</div>
+                        <div class="scene-desc">
+                            스텔스기 탈환에 성공한 본드. 자폭 장치를 작동시킨 기지는 불길과 함께 바다 속으로 가라앉는다. 탈출 보트에서 바라보는 카리브해의 밤하늘. <strong>스텔스기는 안전하게 귀환</strong>하고, 세계의 균형은 다시 지켜진다.
+                        </div>
+                        <span class="scene-tag">📍 카리브해 · 임무 완료 엔딩</span>
+                    </div>
+                </div>
+
+            </div>
+        </div><!-- /스토리 핵심 장면 -->
 
     </div><!-- /tab-intro -->
 
@@ -805,7 +1308,7 @@
 
 <footer>
     <p>ScummVM Cine Engine Korean Localization &nbsp;—&nbsp; <strong>v0.8.3</strong></p>
-    <p style="margin-top:6px;">제작: <strong>리뮤 (securityrimo)</strong> &nbsp;|&nbsp; 미래 전쟁 한국어판 로직 승계</p>
+    <p style="margin-top:6px;">한국어판 제작: <strong>securityrimo</strong> &nbsp;|&nbsp; 제임스 본드 007: 더 스텔스 어페어 한국어판 배포 사이트.</p>
 </footer>
 
 <script>
