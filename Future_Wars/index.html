@@ -272,6 +272,87 @@
             border-color: var(--accent-color);
         }
         .gb-field select option { background: #161b22; }
+
+        /* 파일 첨부 영역 */
+        .gb-attach-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 18px 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            position: relative;
+            background: #0d1117;
+        }
+        .gb-attach-zone:hover,
+        .gb-attach-zone.drag-over {
+            border-color: var(--accent-color);
+            background: #0d1f38;
+        }
+        .gb-attach-zone input[type=file] {
+            position: absolute; inset: 0;
+            opacity: 0; cursor: pointer;
+            width: 100%; height: 100%;
+            padding: 0;
+        }
+        .gb-attach-icon { font-size: 1.6rem; display: block; margin-bottom: 4px; }
+        .gb-attach-hint { font-size: 0.8rem; color: #8b949e; }
+        .gb-attach-hint strong { color: var(--accent-color); }
+
+        /* 미리보기 목록 */
+        .gb-preview-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .gb-preview-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #0d1117;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 10px;
+        }
+        .gb-preview-thumb {
+            width: 48px; height: 36px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+        .gb-preview-icon {
+            width: 48px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            background: #161b22;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+        .gb-preview-info { flex: 1; min-width: 0; }
+        .gb-preview-name {
+            font-size: 0.82rem;
+            color: #c9d1d9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .gb-preview-size { font-size: 0.75rem; color: #484f58; }
+        .gb-preview-remove {
+            background: none;
+            border: none;
+            color: #8b949e;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: color 0.2s, background 0.2s;
+            flex-shrink: 0;
+        }
+        .gb-preview-remove:hover { color: #ff7b72; background: #2a1010; }
+
         .gb-actions {
             display: flex;
             gap: 10px;
@@ -320,11 +401,7 @@
             margin-bottom: 8px;
             flex-wrap: wrap;
         }
-        .gb-nick {
-            font-weight: bold;
-            color: #ffffff;
-            font-size: 0.95rem;
-        }
+        .gb-nick { font-weight: bold; color: #ffffff; font-size: 0.95rem; }
         .gb-badge {
             font-size: 0.72rem;
             font-weight: bold;
@@ -332,14 +409,42 @@
             border-radius: 20px;
             letter-spacing: 0.04em;
         }
-        .badge-bug { background: #3d1a1a; color: #ff7b72; border: 1px solid #ff7b72; }
+        .badge-bug   { background: #3d1a1a; color: #ff7b72; border: 1px solid #ff7b72; }
         .badge-guest { background: #0d1f38; color: #58a6ff; border: 1px solid #58a6ff; }
-        .gb-date {
-            margin-left: auto;
-            font-size: 0.78rem;
-            color: #484f58;
-        }
+        .gb-date { margin-left: auto; font-size: 0.78rem; color: #484f58; }
         .gb-body { font-size: 0.95rem; color: #c9d1d9; line-height: 1.65; white-space: pre-wrap; word-break: break-all; }
+
+        /* 첨부파일 표시 */
+        .gb-attachments {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .gb-att-img {
+            width: 90px; height: 68px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .gb-att-img:hover { opacity: 0.85; }
+        .gb-att-file {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #0d1117;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            color: #c9d1d9;
+            text-decoration: none;
+            transition: border-color 0.2s;
+        }
+        .gb-att-file:hover { border-color: var(--accent-color); color: var(--accent-color); }
+
         .gb-entry-actions {
             display: flex;
             gap: 8px;
@@ -356,7 +461,7 @@
             color: #8b949e;
             transition: all 0.2s;
         }
-        .btn-edit:hover { border-color: var(--accent-color); color: var(--accent-color); }
+        .btn-edit:hover   { border-color: var(--accent-color); color: var(--accent-color); }
         .btn-delete:hover { border-color: #ff7b72; color: #ff7b72; }
         .gb-empty {
             text-align: center;
@@ -365,13 +470,37 @@
             font-size: 0.95rem;
         }
         .gb-empty span { display: block; font-size: 2rem; margin-bottom: 10px; }
-        .gb-count {
-            font-size: 0.85rem;
-            color: #8b949e;
-            margin-bottom: 14px;
-        }
+        .gb-count { font-size: 0.85rem; color: #8b949e; margin-bottom: 14px; }
         .gb-count strong { color: var(--accent-color); }
 
+        /* 이미지 라이트박스 */
+        #gb-lightbox {
+            display: none;
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.88);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+        #gb-lightbox img {
+            max-width: 90vw;
+            max-height: 88vh;
+            border-radius: 6px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            pointer-events: none;
+        }
+        #gb-lightbox-close {
+            position: absolute;
+            top: 16px; right: 22px;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        #gb-lightbox-close:hover { opacity: 1; }
 
         /* ── 스크린샷 슬라이더 ── */
         .ss-section { margin-bottom: 40px; }
@@ -483,7 +612,7 @@
 
 <div class="container">
     <header>
-        <h1>미래 전쟁 (Future Wars) 한국어화 버전 v0.8.3 (2026.06.24)</h1>
+        <h1>미래 전쟁 (Future Wars) 한국어판 v0.8.3 (2026.06.24)</h1>
         <p class="subtitle">시대를 앞서간 타임 트래블 포인트 앤 클릭 어드벤처</p>
     </header>
 
@@ -1097,7 +1226,7 @@
     </div>
 
     <div class="content-section">
-        <h2>🛠️ 미래전쟁 게임 특징 및 플레이 팁</h2>
+        <h2>🛠️ 한국어판 특징 및 플레이 팁</h2>
         <ul>
             <li><strong>완벽한 몰입감:</strong> 한글화하는 사람들의 모임(한사모)의 장인정신이 담긴 번역으로 난해한 SF 설정과 스토리를 완벽하게 한국어로 즐길 수 있습니다.</li>
             <li><strong>높은 난이도:</strong> 당시 고전 게임 특유의 불친절함과 픽셀 단위의 철저한 아이템 탐색이 요구되므로, 세밀한 마우스 컨트롤과 관찰력이 필수입니다.</li>
@@ -1265,14 +1394,14 @@
             <span class="dl-icon">💾</span>
             <span class="dl-text">
                 <span class="dl-label">Download</span>
-                <span class="dl-filename">스컴(CINE) 엔진 한국어화 전용 빌드 버전 실행 파일</span>
+                <span class="dl-filename">스컴(CINE) 한국어화 전용 빌드 버전</span>
             </span>
         </a>
         <a href="#" class="dl-btn">
             <span class="dl-icon">💾</span>
             <span class="dl-text">
                 <span class="dl-label">Download</span>
-                <span class="dl-filename">미래전쟁 한국어화 필수 파일</span>
+                <span class="dl-filename">미래전쟁 한국어화 필수 구성요소</span>
             </span>
         </a>
     </div>
@@ -1308,6 +1437,18 @@
                     <textarea id="gb-body" rows="4" placeholder="내용을 입력하세요..."></textarea>
                 </div>
             </div>
+            <!-- 파일 첨부 -->
+            <div class="gb-row">
+                <div class="gb-field" style="flex:1 1 100%">
+                    <label>📎 파일 첨부 <span style="font-size:0.72rem;color:#484f58">이미지·텍스트 등 (개당 2MB 이하, 최대 3개)</span></label>
+                    <div class="gb-attach-zone" id="gb-drop-zone">
+                        <input type="file" id="gb-file-input" multiple accept="*/*" onchange="handleFileSelect(this.files)">
+                        <span class="gb-attach-icon">📂</span>
+                        <div class="gb-attach-hint">클릭하거나 <strong>파일을 드래그</strong>해서 첨부</div>
+                    </div>
+                    <div class="gb-preview-list" id="gb-preview-list"></div>
+                </div>
+            </div>
             <div class="gb-actions">
                 <button class="btn-cancel" id="gb-cancel-btn" style="display:none" onclick="cancelEdit()">취소</button>
                 <button class="btn-submit" onclick="submitEntry()">등록</button>
@@ -1319,7 +1460,7 @@
         <div class="gb-count" id="gb-count"></div>
         <div class="gb-list" id="gb-list"></div>
 
-        <!-- 수정 시 비밀번호 확인 모달 -->
+        <!-- 비밀번호 확인 모달 -->
         <div id="pw-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center;">
             <div style="background:#161b22;border:1px solid #30363d;border-radius:12px;padding:28px 28px 22px;width:320px;max-width:90vw;">
                 <p style="color:#fff;font-weight:bold;margin:0 0 14px">🔒 비밀번호 확인</p>
@@ -1331,6 +1472,12 @@
                     <button class="btn-submit" id="modal-confirm-btn">확인</button>
                 </div>
             </div>
+        </div>
+
+        <!-- 이미지 라이트박스 -->
+        <div id="gb-lightbox" onclick="closeLightbox()">
+            <span id="gb-lightbox-close" onclick="closeLightbox()">✕</span>
+            <img id="gb-lightbox-img" src="" alt="첨부 이미지">
         </div>
 
     </div><!-- /tab-guestbook -->
@@ -1350,24 +1497,96 @@ function switchTab(name) {
     if (name === 'guestbook') renderList();
 }
 
-/* ── 스토리지 키 ── */
+/* ── 스토리지 ── */
 const STORE_KEY = 'fw_guestbook_entries';
-
 function loadEntries() {
-    try {
-        const raw = localStorage.getItem(STORE_KEY);
-        return raw ? JSON.parse(raw) : [];
-    } catch(e) { return []; }
+    try { const r = localStorage.getItem(STORE_KEY); return r ? JSON.parse(r) : []; }
+    catch(e) { return []; }
 }
 function saveEntries(arr) {
-    localStorage.setItem(STORE_KEY, JSON.stringify(arr));
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }
+    catch(e) { showError('저장 공간이 부족합니다. 첨부 파일 크기를 줄여주세요.'); }
 }
 
 /* ── 날짜 포맷 ── */
 function formatDate(iso) {
-    const d = new Date(iso);
-    const pad = n => String(n).padStart(2,'0');
-    return `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    const d = new Date(iso), p = n => String(n).padStart(2,'0');
+    return `${d.getFullYear()}.${p(d.getMonth()+1)}.${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+
+/* ── 파일 크기 포맷 ── */
+function fmtSize(bytes) {
+    if(bytes < 1024) return bytes + ' B';
+    if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+    return (bytes/(1024*1024)).toFixed(1) + ' MB';
+}
+
+/* ── 파일 아이콘 ── */
+function fileIcon(name) {
+    const ext = name.split('.').pop().toLowerCase();
+    const map = { txt:'📄', pdf:'📕', zip:'🗜️', rar:'🗜️', doc:'📝', docx:'📝',
+                  xls:'📊', xlsx:'📊', mp3:'🎵', wav:'🎵', mp4:'🎬', avi:'🎬' };
+    return map[ext] || '📎';
+}
+
+/* ── 첨부 파일 임시 저장 ── */
+let pendingFiles = []; // [{name, size, type, data(base64 or null)}]
+
+function handleFileSelect(files) {
+    const MAX_PER_FILE = 2 * 1024 * 1024; // 2MB
+    const MAX_COUNT = 3;
+    Array.from(files).forEach(file => {
+        if(pendingFiles.length >= MAX_COUNT) {
+            showError(`파일은 최대 ${MAX_COUNT}개까지 첨부 가능합니다.`); return;
+        }
+        if(file.size > MAX_PER_FILE) {
+            showError(`"${file.name}" 파일이 2MB를 초과합니다.`); return;
+        }
+        const reader = new FileReader();
+        reader.onload = e => {
+            pendingFiles.push({ name: file.name, size: file.size, type: file.type, data: e.target.result });
+            renderPreview();
+        };
+        reader.readAsDataURL(file);
+    });
+    // input 초기화 (같은 파일 재선택 허용)
+    document.getElementById('gb-file-input').value = '';
+}
+
+function removeFile(idx) {
+    pendingFiles.splice(idx, 1);
+    renderPreview();
+}
+
+function renderPreview() {
+    const wrap = document.getElementById('gb-preview-list');
+    if(!pendingFiles.length) { wrap.innerHTML = ''; return; }
+    wrap.innerHTML = pendingFiles.map((f, i) => {
+        const isImg = f.type.startsWith('image/');
+        const thumb = isImg
+            ? `<img class="gb-preview-thumb" src="${f.data}" alt="${f.name}">`
+            : `<div class="gb-preview-icon">${fileIcon(f.name)}</div>`;
+        return `<div class="gb-preview-item">
+            ${thumb}
+            <div class="gb-preview-info">
+                <div class="gb-preview-name" title="${escHtml(f.name)}">${escHtml(f.name)}</div>
+                <div class="gb-preview-size">${fmtSize(f.size)}</div>
+            </div>
+            <button class="gb-preview-remove" onclick="removeFile(${i})" title="제거">✕</button>
+        </div>`;
+    }).join('');
+}
+
+/* ── 드래그앤드롭 ── */
+const dropZone = document.getElementById('gb-drop-zone');
+if(dropZone) {
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        handleFileSelect(e.dataTransfer.files);
+    });
 }
 
 /* ── 등록/수정 상태 ── */
@@ -1380,21 +1599,21 @@ function submitEntry() {
     const body = document.getElementById('gb-body').value.trim();
     const err  = document.getElementById('gb-error');
 
-    if (!nick) { showError('닉네임을 입력해주세요.'); return; }
-    if (!pw)   { showError('비밀번호를 입력해주세요.'); return; }
-    if (!body) { showError('내용을 입력해주세요.'); return; }
+    if(!nick) { showError('닉네임을 입력해주세요.'); return; }
+    if(!pw)   { showError('비밀번호를 입력해주세요.'); return; }
+    if(!body) { showError('내용을 입력해주세요.'); return; }
     err.style.display = 'none';
 
     const entries = loadEntries();
 
-    if (editingId) {
-        /* 수정 모드: 해당 글 찾아서 업데이트 */
+    if(editingId) {
         const idx = entries.findIndex(e => e.id === editingId);
-        if (idx !== -1) {
-            if (entries[idx].pw !== pw) { showError('비밀번호가 일치하지 않습니다.'); return; }
+        if(idx !== -1) {
+            if(entries[idx].pw !== pw) { showError('비밀번호가 일치하지 않습니다.'); return; }
             entries[idx].nick = nick;
             entries[idx].type = type;
             entries[idx].body = body;
+            entries[idx].files = [...pendingFiles];
             entries[idx].updatedAt = new Date().toISOString();
         }
         editingId = null;
@@ -1402,10 +1621,10 @@ function submitEntry() {
         document.getElementById('gb-cancel-btn').style.display = 'none';
         document.querySelector('.btn-submit').textContent = '등록';
     } else {
-        /* 신규 등록 */
         entries.unshift({
             id: Date.now().toString(),
             nick, pw, type, body,
+            files: [...pendingFiles],
             createdAt: new Date().toISOString(),
             updatedAt: null
         });
@@ -1418,19 +1637,19 @@ function submitEntry() {
 
 function showError(msg) {
     const el = document.getElementById('gb-error');
-    el.textContent = msg;
-    el.style.display = 'block';
+    el.textContent = msg; el.style.display = 'block';
 }
 
 function clearForm() {
     ['gb-nick','gb-pw','gb-body'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('gb-type').value = 'guest';
     document.getElementById('gb-error').style.display = 'none';
+    pendingFiles = [];
+    renderPreview();
 }
 
 function cancelEdit() {
-    editingId = null;
-    clearForm();
+    editingId = null; clearForm();
     document.getElementById('gb-form-title').textContent = '✏️ 글 남기기';
     document.getElementById('gb-cancel-btn').style.display = 'none';
     document.querySelector('.btn-submit').textContent = '등록';
@@ -1439,112 +1658,113 @@ function cancelEdit() {
 /* ── 렌더링 ── */
 function renderList() {
     const entries = loadEntries();
-    const list = document.getElementById('gb-list');
+    const list    = document.getElementById('gb-list');
     const countEl = document.getElementById('gb-count');
-
-    const bugs   = entries.filter(e => e.type === 'bug').length;
-    const guests = entries.filter(e => e.type === 'guest').length;
+    const bugs    = entries.filter(e => e.type==='bug').length;
+    const guests  = entries.filter(e => e.type==='guest').length;
     countEl.innerHTML = `총 <strong>${entries.length}개</strong> (방명록 ${guests} · 버그제보 ${bugs})`;
 
-    if (!entries.length) {
+    if(!entries.length) {
         list.innerHTML = '<div class="gb-empty"><span>📭</span>아직 작성된 글이 없습니다.<br>첫 번째 글을 남겨보세요!</div>';
         return;
     }
 
-    list.innerHTML = entries.map(e => `
-        <div class="gb-entry type-${e.type}" id="entry-${e.id}">
+    list.innerHTML = entries.map(e => {
+        const filesHtml = (e.files && e.files.length) ? `
+            <div class="gb-attachments">
+                ${e.files.map((f,i) => {
+                    if(f.type && f.type.startsWith('image/')) {
+                        return `<img class="gb-att-img" src="${f.data}" alt="${escHtml(f.name)}"
+                            title="${escHtml(f.name)}" onclick="openLightbox('${f.data}')">`;
+                    }
+                    const a = f.data
+                        ? `href="${f.data}" download="${escHtml(f.name)}"`
+                        : '';
+                    return `<a class="gb-att-file" ${a} title="${escHtml(f.name)}">
+                        ${fileIcon(f.name)} ${escHtml(f.name)} <span style="color:#484f58">(${fmtSize(f.size)})</span>
+                    </a>`;
+                }).join('')}
+            </div>` : '';
+
+        return `<div class="gb-entry type-${e.type}" id="entry-${e.id}">
             <div class="gb-entry-header">
                 <span class="gb-nick">${escHtml(e.nick)}</span>
-                <span class="gb-badge ${e.type === 'bug' ? 'badge-bug' : 'badge-guest'}">
-                    ${e.type === 'bug' ? '🐛 버그제보' : '💬 방명록'}
+                <span class="gb-badge ${e.type==='bug'?'badge-bug':'badge-guest'}">
+                    ${e.type==='bug'?'🐛 버그제보':'💬 방명록'}
                 </span>
                 <span class="gb-date">
-                    ${formatDate(e.createdAt)}${e.updatedAt ? ' <span style="color:#58a6ff;font-size:0.72rem">(수정됨)</span>' : ''}
+                    ${formatDate(e.createdAt)}${e.updatedAt?` <span style="color:#58a6ff;font-size:0.72rem">(수정됨)</span>`:''}
                 </span>
             </div>
             <div class="gb-body">${escHtml(e.body)}</div>
+            ${filesHtml}
             <div class="gb-entry-actions">
                 <button class="btn-edit" onclick="startEdit('${e.id}')">수정</button>
                 <button class="btn-delete" onclick="startDelete('${e.id}')">삭제</button>
             </div>
-        </div>
-    `).join('');
+        </div>`;
+    }).join('');
 }
 
 function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    if(!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* ── 수정 시작 ── */
-function startEdit(id) {
-    const entries = loadEntries();
-    const e = entries.find(x => x.id === id);
-    if (!e) return;
-    /* 비밀번호 모달 → 확인 후 폼에 채우기 */
-    openModal('edit', id);
-}
+/* ── 수정/삭제 ── */
+function startEdit(id) { openModal('edit', id); }
+function startDelete(id) { openModal('delete', id); }
 
-/* ── 삭제 시작 ── */
-function startDelete(id) {
-    openModal('delete', id);
-}
-
-/* ── 모달 ── */
-let modalAction = null;
-let modalTargetId = null;
-
+let modalAction = null, modalTargetId = null;
 function openModal(action, id) {
-    modalAction = action;
-    modalTargetId = id;
+    modalAction = action; modalTargetId = id;
     document.getElementById('modal-pw').value = '';
     document.getElementById('modal-error').style.display = 'none';
     const modal = document.getElementById('pw-modal');
     modal.style.display = 'flex';
     setTimeout(() => document.getElementById('modal-pw').focus(), 50);
     document.getElementById('modal-confirm-btn').onclick = confirmModal;
-    /* Enter 키 */
     document.getElementById('modal-pw').onkeydown = e => { if(e.key==='Enter') confirmModal(); };
 }
-
 function closeModal() {
     document.getElementById('pw-modal').style.display = 'none';
     modalAction = null; modalTargetId = null;
 }
-
 function confirmModal() {
     const pw = document.getElementById('modal-pw').value;
     const entries = loadEntries();
     const idx = entries.findIndex(e => e.id === modalTargetId);
-    if (idx === -1) { closeModal(); return; }
-    if (entries[idx].pw !== pw) {
-        document.getElementById('modal-error').style.display = 'block';
-        return;
-    }
-    if (modalAction === 'delete') {
-        entries.splice(idx, 1);
-        saveEntries(entries);
-        closeModal();
-        renderList();
-    } else if (modalAction === 'edit') {
+    if(idx === -1) { closeModal(); return; }
+    if(entries[idx].pw !== pw) { document.getElementById('modal-error').style.display='block'; return; }
+    if(modalAction === 'delete') {
+        entries.splice(idx, 1); saveEntries(entries); closeModal(); renderList();
+    } else if(modalAction === 'edit') {
         const e = entries[idx];
-        /* 폼에 데이터 채우기 */
         document.getElementById('gb-nick').value = e.nick;
-        document.getElementById('gb-pw').value = pw;
+        document.getElementById('gb-pw').value   = pw;
         document.getElementById('gb-type').value = e.type;
         document.getElementById('gb-body').value = e.body;
+        pendingFiles = e.files ? [...e.files] : [];
+        renderPreview();
         editingId = e.id;
         document.getElementById('gb-form-title').textContent = '✏️ 글 수정 중...';
         document.getElementById('gb-cancel-btn').style.display = 'inline-block';
         document.querySelector('.btn-submit').textContent = '수정 완료';
-        document.getElementById('gb-form-wrap').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('gb-form-wrap').scrollIntoView({ behavior:'smooth' });
         closeModal();
     }
 }
 
-/* ── 초기 렌더 (방명록 탭 진입 시) ── */
-document.addEventListener('DOMContentLoaded', () => {
-    /* 탭1이 기본 활성이므로 방명록은 진입 시 렌더 */
-});
+/* ── 라이트박스 ── */
+function openLightbox(src) {
+    document.getElementById('gb-lightbox-img').src = src;
+    document.getElementById('gb-lightbox').style.display = 'flex';
+}
+function closeLightbox() {
+    document.getElementById('gb-lightbox').style.display = 'none';
+    document.getElementById('gb-lightbox-img').src = '';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
 </script>
 </body>
 </html>
