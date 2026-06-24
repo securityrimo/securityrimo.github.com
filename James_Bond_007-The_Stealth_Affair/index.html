@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>007 제임스 본드: 더 스텔스 어페어 — 한국어판</title>
+    <style>
+        :root {
+            --bg:        #0a0c0e;
+            --surface:   #10141a;
+            --surface2:  #161c26;
+            --border:    #252d3a;
+            --text:      #c8cfd8;
+            --muted:     #6a7585;
+            --gold:      #c9a84c;
+            --gold-lt:   #e8c96a;
+            --gold-dk:   #7a5e1f;
+            --white:     #f0f2f4;
+            --danger:    #e05c5c;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Segoe UI", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        a { color: var(--gold); text-decoration: none; }
+        a:hover { color: var(--gold-lt); text-decoration: underline; }
+
+        /* ── 히어로 ── */
+        .hero {
+            position: relative;
+            background: radial-gradient(ellipse at 50% 0%, #1a1408 0%, #0a0c0e 70%);
+            border-bottom: 1px solid var(--border);
+            padding: 64px 24px 48px;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(201,168,76,0.025) 2px,
+                    rgba(201,168,76,0.025) 4px
+                );
+            pointer-events: none;
+        }
+        .hero-eyebrow {
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .hero-eyebrow::before,
+        .hero-eyebrow::after {
+            content: '';
+            display: inline-block;
+            width: 40px;
+            height: 1px;
+            background: var(--gold-dk);
+        }
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            color: var(--white);
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+        .hero h1 em {
+            font-style: normal;
+            color: var(--gold);
+        }
+        .hero-sub {
+            font-size: 1.05rem;
+            color: var(--muted);
+            margin-bottom: 32px;
+        }
+
+        /* ── 메타 배지 ── */
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 0;
+        }
+        .badge {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 5px 14px;
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+        .badge strong { color: var(--gold-lt); }
+
+        /* ── 컨테이너 ── */
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 48px 20px;
+        }
+
+        /* ── 섹션 헤딩 ── */
+        .section { margin-bottom: 48px; }
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 3px;
+            height: 1.1em;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+
+        /* ── 스크린샷 영웅 그리드 ── */
+        .shot-hero {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+            background: var(--surface);
+        }
+        .shot-hero svg { display: block; width: 100%; height: auto; }
+
+        .shot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .shot-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .shot-card svg { display: block; width: 100%; height: auto; }
+        .shot-cap {
+            padding: 7px 12px;
+            font-size: 0.78rem;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+        .shot-cap strong { color: var(--gold); }
+
+        /* ── 소개 텍스트 ── */
+        .intro-body p {
+            font-size: 1.02rem;
+            color: var(--text);
+            margin-bottom: 14px;
+        }
+        .intro-body p:last-child { margin-bottom: 0; }
+        .intro-body strong { color: var(--gold-lt); }
+
+        /* ── 진행률 테이블 ── */
+        .progress-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        .progress-table th {
+            text-align: left;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .progress-table td {
+            padding: 11px 14px;
+            border-bottom: 1px solid rgba(37,45,58,0.5);
+            color: var(--text);
+        }
+        .progress-table tr:last-child td { border-bottom: none; }
+        .progress-table tr:hover td { background: var(--surface2); }
+        .pct {
+            font-weight: 700;
+            color: var(--gold-lt);
+            font-variant-numeric: tabular-nums;
+        }
+        .bar-wrap {
+            width: 120px;
+            height: 5px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-dk), var(--gold));
+            border-radius: 3px;
+        }
+
+        /* ── 파일 목록 ── */
+        .file-list {
+            display: grid;
+            gap: 10px;
+        }
+        .file-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 14px 16px;
+        }
+        .file-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .file-name {
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 0.88rem;
+            color: var(--gold-lt);
+            margin-bottom: 3px;
+        }
+        .file-desc {
+            font-size: 0.88rem;
+            color: var(--muted);
+        }
+
+        /* ── 장단점 카드 ── */
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        @media (max-width: 540px) { .pros-cons { grid-template-columns: 1fr; } }
+        .pc-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px;
+        }
+        .pc-card h3 {
+            font-size: 0.78rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .pc-card.pros h3 { color: var(--gold); }
+        .pc-card.cons h3 { color: var(--danger); }
+        .pc-card ul { list-style: none; padding: 0; }
+        .pc-card li {
+            padding: 6px 0;
+            font-size: 0.91rem;
+            color: var(--text);
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid rgba(37,45,58,0.4);
+        }
+        .pc-card li:last-child { border-bottom: none; }
+        .pc-card.pros li::before { content: '✦'; color: var(--gold); flex-shrink: 0; }
+        .pc-card.cons li::before { content: '▲'; color: var(--danger); flex-shrink: 0; font-size: 0.75em; margin-top: 3px; }
+
+        /* ── 이력 타임라인 ── */
+        .timeline { position: relative; padding-left: 24px; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            bottom: 6px;
+            width: 1px;
+            background: var(--border);
+        }
+        .tl-item {
+            position: relative;
+            margin-bottom: 22px;
+        }
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            left: -21px;
+            top: 6px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--gold-dk);
+            border: 2px solid var(--gold);
+        }
+        .tl-item.latest::before { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+        .tl-ver {
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2px;
+        }
+        .tl-date {
+            font-size: 0.75rem;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+        .tl-desc {
+            font-size: 0.92rem;
+            color: var(--text);
+        }
+
+        /* ── 다운로드 버튼 ── */
+        .dl-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .dl-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1 1 220px;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #1a1408 0%, #0e0e0a 100%);
+            border: 1px solid var(--gold-dk);
+            border-radius: 6px;
+            color: var(--white);
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            text-decoration: none;
+        }
+        .dl-btn:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 14px rgba(201,168,76,0.25);
+            background: linear-gradient(135deg, #221c08 0%, #141209 100%);
+            color: var(--white);
+            text-decoration: none;
+        }
+        .dl-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .dl-text { display: flex; flex-direction: column; line-height: 1.3; }
+        .dl-label { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+        .dl-name  { font-size: 0.9rem; color: var(--white); font-weight: 600; }
+
+        /* ── 탭 ── */
+        .tab-nav {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 28px;
+            gap: 0;
+        }
+        .tab-btn {
+            padding: 10px 24px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            color: var(--muted);
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.03em;
+            transition: color 0.15s, border-color 0.15s;
+            font-family: inherit;
+        }
+        .tab-btn:hover { color: var(--text); }
+        .tab-btn.active { color: var(--gold-lt); border-bottom-color: var(--gold); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── notice ── */
+        .notice {
+            background: rgba(201,168,76,0.07);
+            border: 1px solid var(--gold-dk);
+            border-radius: 6px;
+            padding: 14px 18px;
+            font-size: 0.88rem;
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+        .notice strong { color: var(--gold-lt); }
+
+        /* ── footer ── */
+        footer {
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 28px 20px;
+            font-size: 0.83rem;
+            color: var(--muted);
+        }
+        footer strong { color: var(--gold); }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<div class="hero">
+    <!-- 총구 조준경 SVG 장식 -->
+    <svg style="position:absolute;top:0;left:50%;transform:translateX(-50%);opacity:0.06;width:340px;pointer-events:none;" viewBox="0 0 340 240" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="170" cy="120" r="100" stroke="#c9a84c" stroke-width="1" fill="none"/>
+        <circle cx="170" cy="120" r="70"  stroke="#c9a84c" stroke-width="0.5" fill="none"/>
+        <circle cx="170" cy="120" r="40"  stroke="#c9a84c" stroke-width="0.5" fill="none"/>
+        <line x1="170" y1="0"  x2="170" y2="240" stroke="#c9a84c" stroke-width="0.5"/>
+        <line x1="0"   y1="120" x2="340" y2="120" stroke="#c9a84c" stroke-width="0.5"/>
+        <circle cx="170" cy="120" r="4" fill="#c9a84c" opacity="0.6"/>
+    </svg>
+
+    <div class="hero-eyebrow">ScummVM · Cine Engine · Korean Localization</div>
+    <h1>007 제임스 본드<br><em>더 스텔스 어페어</em></h1>
+    <p class="hero-sub">James Bond 007 — The Stealth Affair &nbsp;/&nbsp; 한국어판</p>
+    <div class="badges">
+        <span class="badge">플랫폼 <strong>ScummVM</strong></span>
+        <span class="badge">장르 <strong>어드벤처</strong></span>
+        <span class="badge">엔진 <strong>Cine Engine</strong></span>
+        <span class="badge">패치 <strong>v0.8.3</strong></span>
+        <span class="badge">배포 <strong>2026.06.23</strong></span>
+        <span class="badge">제작 <strong>리뮤 (securityrimo)</strong></span>
+    </div>
+</div>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<div class="container">
+
+    <!-- 탭 네비게이션 -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('intro',this)">소개</button>
+        <button class="tab-btn" onclick="switchTab('screens',this)">스크린샷</button>
+        <button class="tab-btn" onclick="switchTab('install',this)">설치</button>
+        <button class="tab-btn" onclick="switchTab('history',this)">이력</button>
+    </div>
+
+    <!-- ─── TAB: 소개 ─── -->
+    <div id="tab-intro" class="tab-panel active">
+
+        <div class="section">
+            <div class="section-title">게임 소개</div>
+            <div class="intro-body">
+                <p>
+                    <strong>제임스 본드 007: 더 스텔스 어페어</strong>는 1990년 Delphine Software가 개발한
+                    포인트 앤 클릭 어드벤처 게임입니다. 북미판 제목은 <em>Operation Stealth</em>로도 알려져 있으며,
+                    ScummVM의 <strong>Cine 엔진</strong>을 통해 현재 PC에서도 플레이할 수 있습니다.
+                </p>
+                <p>
+                    플레이어는 CIA 요원 <strong>존 스틸</strong>(제임스 본드 라이선스 버전에서는 제임스 본드)로서
+                    쿠바 공군에 의해 탈취된 최첨단 <strong>스텔스기</strong>를 되찾는 임무를 맡습니다.
+                    워싱턴 D.C. 에서 시작해 열대의 섬에 이르기까지, 스파이 액션과 퍼즐이 어우러진 긴장감 넘치는 첩보 어드벤처입니다.
+                </p>
+                <p>
+                    이번 한국어판은 <strong>ScummVM Cine 엔진 미래 전쟁 한국어판</strong>의 한글 처리 로직을
+                    이어받아 제작되었습니다. <strong>Galmuri9.ttf</strong> 폰트 기반의 TTF 렌더링,
+                    <code>koreans.trs</code> / <code>KoreanItems.trs</code> 번역 파일 구조,
+                    <code>korean.ini</code> 환경설정을 그대로 계승하여 안정적인 한글 출력을 구현합니다.
+                </p>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">한글화 진행 현황</div>
+            <table class="progress-table">
+                <thead>
+                    <tr>
+                        <th>항목</th>
+                        <th>진행률</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="progress-tbody"></tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <div class="section-title">장점 / 단점</div>
+            <div class="pros-cons">
+                <div class="pc-card pros">
+                    <h3>✦ 장점</h3>
+                    <ul>
+                        <li>원본 게임 스타일 100% 유지</li>
+                        <li><code>.trs</code> 수정 후 재실행 시 즉시 번역 반영</li>
+                        <li>미번역 항목 자동 로그 파일 생성</li>
+                        <li><code>korean.ini</code>로 폰트·크기·색상 자유 조정</li>
+                        <li>CD 음원 지원 빌드 (flac 옵션 포함)</li>
+                    </ul>
+                </div>
+                <div class="pc-card cons">
+                    <h3>▲ 유의 사항</h3>
+                    <ul>
+                        <li>전용 ScummVM 빌드 사용 필수</li>
+                        <li>Cine 엔진 게임만 구동 가능</li>
+                        <li>필수 파일 4개 게임 폴더 별도 관리 필요</li>
+                        <li>원본 게임 파일 미포함 (별도 구매 필요)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /tab-intro -->
+
+    <!-- ─── TAB: 스크린샷 ─── -->
+    <div id="tab-screens" class="tab-panel">
+        <div class="section">
+            <div class="section-title">게임 스크린샷</div>
+
+            <!-- 히어로 씬: 인트로 -->
+            <div class="shot-hero">
+                <svg viewBox="0 0 780 438" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="780" height="438" fill="#020508"/>
+                    <!-- 동심원 스텔스기 헬멧 느낌 -->
+                    <ellipse cx="390" cy="219" rx="260" ry="220" fill="none" stroke="#1a2a4a" stroke-width="60"/>
+                    <ellipse cx="390" cy="190" rx="180" ry="160" fill="#050e1e"/>
+                    <!-- 눈 -->
+                    <ellipse cx="320" cy="195" rx="38" ry="22" fill="#0d2d6e"/>
+                    <ellipse cx="460" cy="195" rx="38" ry="22" fill="#0d2d6e"/>
+                    <ellipse cx="320" cy="195" rx="20" ry="14" fill="#1a3fa0" opacity="0.9"/>
+                    <ellipse cx="460" cy="195" rx="20" ry="14" fill="#1a3fa0" opacity="0.9"/>
+                    <!-- 조종석 장치 상단 -->
+                    <rect x="340" y="148" width="100" height="16" rx="4" fill="#0a1a38"/>
+                    <circle cx="360" cy="156" r="5" fill="#e03030" opacity="0.9"/>
+                    <circle cx="420" cy="156" r="5" fill="#30c030" opacity="0.9"/>
+                    <!-- 텍스트 -->
+                    <text x="390" y="370" fill="#c9a84c" font-size="15" font-family="monospace" text-anchor="middle" letter-spacing="4">OPERATION STEALTH — 인트로 시퀀스</text>
+                </svg>
+            </div>
+            <div class="shot-cap" style="margin-bottom:20px;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;padding:8px 14px;">
+                <strong>오프닝 시퀀스</strong> — 스텔스 전투기 테마의 강렬한 인트로
+            </div>
+
+            <div class="shot-grid">
+                <!-- 씬 1: 크레딧 -->
+                <div class="shot-card">
+                    <svg viewBox="0 0 370 208" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="370" height="208" fill="#0a0a08"/>
+                        <!-- 격납고 배경 -->
+                        <rect x="0" y="0" width="370" height="130" fill="#1a0808"/>
+                        <rect x="40" y="20" width="60" height="100" fill="#2a1010" stroke="#3a1a1a" stroke-width="1"/>
+                        <rect x="160" y="40" width="50" height="80" fill="#3a2020"/>
+                        <rect x="280" y="30" width="55" height="90" fill="#2a1010"/>
+                        <!-- 빛 기둥 -->
+                        <rect x="185" y="30" width="10" height="80" fill="url(#lightGrad)"/>
+                        <defs>
+                            <linearGradient id="lightGrad" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#ffaa33" stop-opacity="0.9"/>
+                                <stop offset="100%" stop-color="#ff6600" stop-opacity="0.2"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- 줄무늬 경고 -->
+                        <rect x="100" y="120" width="170" height="20" fill="#101010"/>
+                        <line x1="100" y1="120" x2="270" y2="140" stroke="#3a3a00" stroke-width="6"/>
+                        <line x1="120" y1="120" x2="290" y2="140" stroke="#3a3a00" stroke-width="6"/>
+                        <!-- 크레딧 텍스트 -->
+                        <text x="185" y="160" fill="#66cc66" font-size="10" font-family="monospace" text-anchor="middle" letter-spacing="2">ILLUSTRATIONS</text>
+                        <text x="155" y="178" fill="#66cc66" font-size="9" font-family="monospace" text-anchor="middle">IMAGEX    M.BACQUE</text>
+                        <text x="185" y="196" fill="#66cc66" font-size="9" font-family="monospace" text-anchor="middle">E.LECOZ</text>
+                    </svg>
+                    <div class="shot-cap"><strong>크레딧</strong> — 격납고 배경 오프닝</div>
+                </div>
+
+                <!-- 씬 2: 워싱턴 -->
+                <div class="shot-card">
+                    <svg viewBox="0 0 370 208" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="370" height="208" fill="#0d0a07"/>
+                        <!-- 건물 외관 -->
+                        <rect x="30" y="30" width="310" height="148" fill="#3d2e1a"/>
+                        <!-- 창문들 -->
+                        <rect x="50" y="45" width="80" height="70" fill="#0a0805" stroke="#5a4a2a" stroke-width="1"/>
+                        <rect x="150" y="45" width="70" height="70" fill="#0a0805" stroke="#5a4a2a" stroke-width="1"/>
+                        <rect x="240" y="45" width="80" height="70" fill="#0a0805" stroke="#5a4a2a" stroke-width="1"/>
+                        <!-- 반사 -->
+                        <rect x="52" y="47" width="20" height="30" fill="#181410" opacity="0.7"/>
+                        <rect x="242" y="47" width="20" height="30" fill="#181410" opacity="0.7"/>
+                        <!-- 출입구 -->
+                        <rect x="120" y="130" width="130" height="48" fill="#2a1e0a"/>
+                        <!-- 기둥들 -->
+                        <rect x="130" y="125" width="12" height="53" fill="#4a3820"/>
+                        <rect x="228" y="125" width="12" height="53" fill="#4a3820"/>
+                        <!-- 타이틀 -->
+                        <text x="185" y="176" fill="#ccc0a0" font-size="11" font-family="monospace" text-anchor="middle" letter-spacing="3">WASHINGTON D.C.</text>
+                    </svg>
+                    <div class="shot-cap"><strong>워싱턴 D.C.</strong> — 임무 시작 배경</div>
+                </div>
+
+                <!-- 씬 3: 한국어 대사 -->
+                <div class="shot-card">
+                    <svg viewBox="0 0 370 208" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="370" height="208" fill="#1a1208"/>
+                        <!-- 집무실 벽 -->
+                        <rect x="0" y="0" width="370" height="140" fill="#2a1c10"/>
+                        <!-- 사진 액자들 -->
+                        <rect x="60" y="25" width="50" height="55" fill="#1a1008" stroke="#5a3e20" stroke-width="2"/>
+                        <rect x="160" y="18" width="52" height="60" fill="#1a1008" stroke="#5a3e20" stroke-width="2"/>
+                        <rect x="260" y="22" width="50" height="55" fill="#1a1008" stroke="#5a3e20" stroke-width="2"/>
+                        <!-- 책상 -->
+                        <ellipse cx="185" cy="100" rx="80" ry="15" fill="#2a1a08"/>
+                        <rect x="105" y="85" width="160" height="30" fill="#3a2a12"/>
+                        <!-- 인물들 -->
+                        <ellipse cx="170" cy="72" rx="14" ry="17" fill="#c8a070"/>
+                        <rect x="155" y="89" width="30" height="30" fill="#5a3a10"/>
+                        <ellipse cx="290" cy="68" rx="12" ry="15" fill="#c8a070"/>
+                        <rect x="276" y="83" width="28" height="40" fill="#101010"/>
+                        <!-- 대화 박스 -->
+                        <rect x="30" y="148" width="310" height="50" fill="#3a2808" stroke="#c9a84c" stroke-width="1.5" rx="3"/>
+                        <text x="50" y="168" fill="#ffffff" font-size="11" font-family="'Segoe UI', sans-serif">"반갑소, 본드 요원."</text>
+                    </svg>
+                    <div class="shot-cap"><strong>한국어 대사</strong> — M 국장과의 브리핑</div>
+                </div>
+
+                <!-- 씬 4: 멀티라인 대사 -->
+                <div class="shot-card">
+                    <svg viewBox="0 0 370 208" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="370" height="208" fill="#181410"/>
+                        <!-- 집무실 배경 (같은 장면, 다른 카메라) -->
+                        <rect x="0" y="0" width="370" height="155" fill="#2a1c10"/>
+                        <rect x="60" y="20" width="50" height="55" fill="#1a1008" stroke="#5a3e20" stroke-width="2"/>
+                        <rect x="160" y="14" width="52" height="62" fill="#1a1008" stroke="#5a3e20" stroke-width="2"/>
+                        <rect x="258" y="18" width="50" height="57" fill="#1a1008" stroke="#5a3e20" stroke-width="2"/>
+                        <!-- 화면 -->
+                        <rect x="155" y="70" width="62" height="52" fill="#050508" stroke="#3a3a5a" stroke-width="1.5"/>
+                        <!-- 스텔스기 실루엣 -->
+                        <polygon points="186,82 174,96 198,96" fill="#8888aa" opacity="0.7"/>
+                        <rect x="180" y="90" width="12" height="6" fill="#6666aa" opacity="0.5"/>
+                        <!-- 인물 -->
+                        <ellipse cx="168" cy="102" rx="13" ry="16" fill="#c8a070"/>
+                        <rect x="154" y="118" width="28" height="28" fill="#5a3a10"/>
+                        <ellipse cx="290" cy="100" rx="11" ry="14" fill="#c8a070"/>
+                        <rect x="277" y="114" width="26" height="36" fill="#101010"/>
+                        <!-- 대화 박스 파란색 -->
+                        <rect x="18" y="155" width="334" height="48" fill="#1a3a80" stroke="#3a6ad0" stroke-width="1.5" rx="3"/>
+                        <text x="30" y="172" fill="#ffffff" font-size="10.5" font-family="'Segoe UI', sans-serif">"정식 채널을 통해 어느 정도 들었습니다.</text>
+                        <text x="30" y="188" fill="#ffffff" font-size="10.5" font-family="'Segoe UI', sans-serif">현존하는 모든 기술력의 전자 감시망을..."</text>
+                    </svg>
+                    <div class="shot-cap"><strong>멀티라인 자막</strong> — 스텔스기 브리핑 대사</div>
+                </div>
+
+                <!-- 씬 5: 공항 로비 -->
+                <div class="shot-card">
+                    <svg viewBox="0 0 370 208" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="370" height="208" fill="#1a1828"/>
+                        <!-- 공항 천장 -->
+                        <rect x="0" y="0" width="370" height="80" fill="#2a2838"/>
+                        <!-- 창문들 (파란빛) -->
+                        <rect x="0" y="0" width="100" height="80" fill="#1a2040"/>
+                        <rect x="120" y="0" width="60" height="80" fill="#1a2040"/>
+                        <rect x="200" y="0" width="50" height="80" fill="#1a2040"/>
+                        <rect x="270" y="0" width="100" height="80" fill="#1a2040"/>
+                        <!-- 창문 프레임 -->
+                        <rect x="0"   y="0" width="2" height="80" fill="#3a4060"/>
+                        <rect x="120" y="0" width="2" height="80" fill="#3a4060"/>
+                        <rect x="182" y="0" width="2" height="80" fill="#3a4060"/>
+                        <rect x="250" y="0" width="2" height="80" fill="#3a4060"/>
+                        <!-- 빗줄기 효과 -->
+                        <line x1="30"  y1="0" x2="50"  y2="80" stroke="#aac0e0" stroke-width="0.5" opacity="0.3"/>
+                        <line x1="70"  y1="0" x2="90"  y2="80" stroke="#aac0e0" stroke-width="0.5" opacity="0.3"/>
+                        <line x1="140" y1="0" x2="160" y2="80" stroke="#aac0e0" stroke-width="0.5" opacity="0.3"/>
+                        <!-- 바닥 -->
+                        <rect x="0" y="140" width="370" height="68" fill="#e8e0d0"/>
+                        <!-- 기둥 -->
+                        <rect x="138" y="80" width="18" height="128" fill="#c8b888"/>
+                        <!-- 안내 키오스크 -->
+                        <ellipse cx="318" cy="165" rx="30" ry="35" fill="#2a8a2a"/>
+                        <rect x="300" y="150" width="36" height="30" fill="#3aaa3a"/>
+                        <!-- 인물들 (실루엣) -->
+                        <ellipse cx="258" cy="115" rx="9" ry="11" fill="#c8a070"/>
+                        <rect x="248" y="126" width="20" height="30" fill="#101010"/>
+                        <ellipse cx="282" cy="112" rx="9" ry="11" fill="#c8a070"/>
+                        <rect x="272" y="123" width="20" height="32" fill="#303060"/>
+                        <!-- 대사 박스 -->
+                        <rect x="80" y="85" width="200" height="50" fill="#3a2808" rx="3" stroke="#c9a84c" stroke-width="1.2"/>
+                        <text x="90" y="103" fill="#ffffff" font-size="10" font-family="'Segoe UI', sans-serif">젊은 여성은 당신에게</text>
+                        <text x="90" y="120" fill="#ffffff" font-size="10" font-family="'Segoe UI', sans-serif">전혀 신경 쓰지 않는다.</text>
+                    </svg>
+                    <div class="shot-cap"><strong>공항 로비</strong> — 해외 첩보 현장</div>
+                </div>
+
+                <!-- 씬 6: 재확인 대사 -->
+                <div class="shot-card">
+                    <svg viewBox="0 0 370 208" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="370" height="208" fill="#181410"/>
+                        <!-- 집무실 -->
+                        <rect x="0" y="0" width="370" height="130" fill="#2a1c10"/>
+                        <rect x="55" y="22" width="50" height="55" fill="#1a1008" stroke="#5a3e20" stroke-width="2"/>
+                        <rect x="158" y="15" width="56" height="63" fill="#1a1008" stroke="#5a3e20" stroke-width="2"/>
+                        <rect x="263" y="20" width="52" height="57" fill="#1a1008" stroke="#5a3e20" stroke-width="2"/>
+                        <!-- 책상 -->
+                        <rect x="100" y="85" width="170" height="30" fill="#3a2a12"/>
+                        <!-- 인물 -->
+                        <ellipse cx="170" cy="70" rx="14" ry="17" fill="#c8a070"/>
+                        <rect x="155" y="87" width="30" height="30" fill="#5a3a10"/>
+                        <ellipse cx="295" cy="68" rx="12" ry="15" fill="#c8a070"/>
+                        <rect x="282" y="83" width="26" height="40" fill="#101010"/>
+                        <!-- 대화 박스 흰 테두리 -->
+                        <rect x="20" y="135" width="330" height="65" fill="#2a1808" stroke="#ffffff" stroke-width="1.5" rx="3"/>
+                        <text x="32" y="155" fill="#ffffff" font-size="9.5" font-family="'Segoe UI', sans-serif">"정확하네, 본드 요원. 하지만 자네가 말한</text>
+                        <text x="32" y="172" fill="#ffffff" font-size="9.5" font-family="'Segoe UI', sans-serif">버전은 이제 구형 모델이네. 최근까지 우리는</text>
+                        <text x="32" y="189" fill="#ffffff" font-size="9.5" font-family="'Segoe UI', sans-serif">그보다 훨씬 뛰어난 개량형 스텔스기를..."</text>
+                    </svg>
+                    <div class="shot-cap"><strong>구형 vs 신형</strong> — 스텔스기 기밀 브리핑</div>
+                </div>
+            </div>
+        </div>
+    </div><!-- /tab-screens -->
+
+    <!-- ─── TAB: 설치 ─── -->
+    <div id="tab-install" class="tab-panel">
+
+        <div class="section">
+            <div class="section-title">다운로드</div>
+            <div class="notice">
+                <strong>⚠ 원본 게임은 포함되지 않습니다.</strong> 한글화 패치 파일 및 전용 ScummVM 빌드만 배포합니다. 게임 원본은 별도로 구하셔야 합니다.
+            </div>
+            <div class="dl-bar">
+                <a class="dl-btn" href="#">
+                    <span class="dl-icon">📦</span>
+                    <span class="dl-text">
+                        <span class="dl-label">한글 패치 (v0.8.3)</span>
+                        <span class="dl-name">stealth_affair_kor_patch.zip</span>
+                    </span>
+                </a>
+                <a class="dl-btn" href="#">
+                    <span class="dl-icon">⚙️</span>
+                    <span class="dl-text">
+                        <span class="dl-label">전용 ScummVM 빌드</span>
+                        <span class="dl-name">scummvm_cine_kor_0.8.3.exe</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">필수 파일 목록</div>
+            <div class="file-list">
+                <div class="file-item">
+                    <span class="file-icon">⚙️</span>
+                    <div>
+                        <div class="file-name">korean.ini</div>
+                        <div class="file-desc">환경 설정 파일 — 색상·폰트·크기·박스 조정. 이 파일로 한글 출력 방식을 자유롭게 커스터마이징할 수 있습니다.</div>
+                    </div>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">💬</span>
+                    <div>
+                        <div class="file-name">Koreans.trs</div>
+                        <div class="file-desc">대사·나레이션·스토리 번역 파일 (<code>원문 TAB 번역</code> 형식). 수정 후 재실행하면 즉시 반영됩니다.</div>
+                    </div>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">🗂️</span>
+                    <div>
+                        <div class="file-name">KoreanItems.trs</div>
+                        <div class="file-desc">아이템 이름 번역 파일 (<code>원문 TAB 번역</code> 형식). 인벤토리 내 모든 아이템 명칭을 한국어로 표시합니다.</div>
+                    </div>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">🔤</span>
+                    <div>
+                        <div class="file-name">Galmuri9.ttf</div>
+                        <div class="file-desc">전체 한글 출력용 TTF 폰트. 픽셀 아트 스타일과 잘 어울리는 갈무리9 폰트를 사용합니다.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">설치 방법</div>
+            <div class="intro-body">
+                <p>1. 전용 ScummVM 빌드 <strong>scummvm_cine_kor_0.8.3.exe</strong>를 다운로드합니다.</p>
+                <p>2. 게임 폴더에 위 4개 파일 (<code>korean.ini</code>, <code>Koreans.trs</code>, <code>KoreanItems.trs</code>, <code>Galmuri9.ttf</code>)을 복사합니다.</p>
+                <p>3. 전용 ScummVM 빌드로 게임을 실행합니다. 파일이 없는 경우 영어 원본으로 동작합니다.</p>
+                <p>번역을 수정하려면 <code>.trs</code> 파일을 메모장 등으로 편집 후 저장하고 게임을 재실행하면 됩니다.</p>
+            </div>
+        </div>
+
+    </div><!-- /tab-install -->
+
+    <!-- ─── TAB: 이력 ─── -->
+    <div id="tab-history" class="tab-panel">
+        <div class="section">
+            <div class="section-title">공개 이력</div>
+            <div class="timeline" id="timeline-wrap"></div>
+        </div>
+    </div><!-- /tab-history -->
+
+</div><!-- /container -->
+
+<footer>
+    <p>ScummVM Cine Engine Korean Localization &nbsp;—&nbsp; <strong>v0.8.3</strong></p>
+    <p style="margin-top:6px;">제작: <strong>리뮤 (securityrimo)</strong> &nbsp;|&nbsp; 미래 전쟁 한국어판 로직 승계</p>
+</footer>
+
+<script>
+    /* ── 탭 전환 ── */
+    function switchTab(id, btn) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-' + id).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    /* ── 진행률 데이터 ── */
+    const progress = [
+        { label: '나레이션 / 대사 / 스토리', pct: 99.9 },
+        { label: '아이템 이름',               pct: 99.9 },
+        { label: '액션 메뉴',                 pct: 100  },
+        { label: '시스템 메뉴',               pct: 100  },
+        { label: '실패 메시지',               pct: 100  },
+        { label: '기타 메시지',               pct: 100  },
+        { label: 'ScummVM 게임 타이틀',       pct: 100  },
+    ];
+    const tbody = document.getElementById('progress-tbody');
+    progress.forEach(row => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${row.label}</td>
+            <td class="pct">${row.pct}%</td>
+            <td>
+                <div class="bar-wrap">
+                    <div class="bar-fill" style="width:${row.pct}%"></div>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    /* ── 타임라인 데이터 ── */
+    const history = [
+        { ver: 'v0.8.3', date: '2026.06.23', desc: '최초 공개 배포 — Cine 엔진 미래 전쟁 한국어판 로직 승계. flac CD 음원 지원 빌드.', latest: true },
+        { ver: 'v0.8.x', date: '2026.06', desc: '아이템·대사·나레이션 번역 품질 개선. 행동 실패 메시지 한글 패치 수정 (원문 메뉴 우회).', latest: false },
+        { ver: 'v0.8.x', date: '2026.06', desc: '액션/시스템/확인 메뉴, 기타/행동 실패 메시지 소스 내 한글 패치 적용.', latest: false },
+        { ver: 'v0.7 ~ v0.8', date: '2026.06.09', desc: 'Cine 엔진용 게임인 James Bond 007 한글 처리 로직 연계.', latest: false },
+        { ver: 'v0.7', date: '2026.06.06', desc: 'ScummVM Cine 엔진 미래 전쟁 한국어판 소스 승계.', latest: false },
+        { ver: 'v0.6', date: '2026.06.06', desc: '가독성 패치 — 폰트 선명도 개선.', latest: false },
+        { ver: 'v0.5', date: '2026.06.05', desc: '최초 배포 — 텍스트 추출 및 koreans.trs 생성.', latest: false },
+        { ver: 'v0.1 ~ v0.4', date: '2026.05 ~', desc: '내부 테스트 (비공개).', latest: false },
+    ];
+    const tlWrap = document.getElementById('timeline-wrap');
+    history.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'tl-item' + (item.latest ? ' latest' : '');
+        div.innerHTML = `
+            <div class="tl-ver">${item.ver}</div>
+            <div class="tl-date">${item.date}</div>
+            <div class="tl-desc">${item.desc}</div>
+        `;
+        tlWrap.appendChild(div);
+    });
+</script>
+</body>
+</html>
