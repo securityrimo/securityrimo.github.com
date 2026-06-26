@@ -1802,64 +1802,82 @@
         updateUI();
     })();
 
-    /* ════════ 방명록 ════════ */
-    const JSONBIN_API_KEY = '$2a$10$5NJmcdoFsbsXSjVNbn7Q2.cTIHVjD7Wk8WDuwTGqTSLH0Hv6Yhb4y';  // ← 여기에 API 키 입력
-    const JSONBIN_BIN_ID  = '';                   // ← 첫 실행 후 자동 저장됨 (또는 직접 입력)
-    const JSONBIN_META_KEY = 'false';
+    /* ════════ 방명록 (jsonbin.io 공유 저장소) ════════ */
+    // 모든 방문자가 같은 글 목록을 보도록 localStorage 대신 jsonbin.io의 공유 Bin을 사용합니다.
+    const JSONBIN_MASTER_KEY = '$2a$10$5NJmcdoFsbsXSjVNbn7Q2.cTIHVjD7Wk8WDuwTGqTSLH0Hv6Yhb4y';
+    const JSONBIN_BASE = 'https://api.jsonbin.io/v3/b';
+    // 최초 1회 자동으로 Bin이 생성됩니다. 생성 후 화면에 나오는 ID를 복사해서 아래에 고정으로 넣고
+    // 파일을 다시 업로드하면, 이후로는 새 Bin이 생기지 않고 항상 같은 저장소를 씁니다.
+    let GB_BIN_ID = '';
     let pendingFiles = [];
 
-    function getBinId(){
-        return JSONBIN_BIN_ID || localStorage.getItem(JSONBIN_META_KEY) || '';
+    async function ensureBin(){
+        if(GB_BIN_ID) return GB_BIN_ID;
+        const cached = localStorage.getItem('stealth_gb_binid_temp');
+        if(cached){ GB_BIN_ID = cached; return GB_BIN_ID; }
+        const res = await fetch(JSONBIN_BASE, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': JSONBIN_MASTER_KEY,
+                'X-Bin-Name': 'stealth_affair_guestbook'
+            },
+            body: JSON.stringify([])
+        });
+        if(!res.ok) throw new Error('bin 생성 실패');
+        const data = await res.json();
+        GB_BIN_ID = data.metadata.id;
+        localStorage.setItem('stealth_gb_binid_temp', GB_BIN_ID);
+        showBinIdNotice(GB_BIN_ID);
+        return GB_BIN_ID;
     }
-    function saveBinId(id){
-        localStorage.setItem(JSONBIN_META_KEY, id);
+
+    function showBinIdNotice(id){
+        console.log('[방명록] 새 Bin이 생성되었습니다. 코드의 GB_BIN_ID 값에 다음 ID를 고정으로 입력하세요:', id);
+        const list = document.getElementById('gb-list');
+        if(list && list.parentNode && !document.getElementById('gb-bin-notice')){
+            const div = document.createElement('div');
+            div.id = 'gb-bin-notice';
+            div.style.cssText = 'background:#1a1408;border:1px solid var(--gold-dk);color:var(--gold-lt);padding:14px 16px;border-radius:6px;margin-bottom:16px;font-size:0.85rem;line-height:1.6;';
+            div.innerHTML = `⚠️ 방명록 공유 저장소가 처음 생성되었습니다.<br>
+                모든 방문자가 같은 글을 보려면, 코드의 <code>GB_BIN_ID</code> 값에 아래 ID를 고정으로 입력한 뒤 파일을 다시 배포해주세요.<br>
+                <strong style="user-select:all">${id}</strong>`;
+            list.parentNode.insertBefore(div, list);
+        }
     }
 
     async function loadEntries(){
-        const binId = getBinId();
-        if(!binId) return [];
-        try {
-            const res = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
-                headers: { 'X-Master-Key': JSONBIN_API_KEY }
+        try{
+            const id = await ensureBin();
+            const res = await fetch(`${JSONBIN_BASE}/${id}/latest`, {
+                headers: { 'X-Master-Key': JSONBIN_MASTER_KEY }
             });
-            if(!res.ok) return [];
+            if(!res.ok) throw new Error('불러오기 실패');
             const data = await res.json();
             return data.record || [];
-        } catch(e){ return []; }
+        }catch(e){
+            console.error(e);
+            return [];
+        }
     }
 
     async function saveEntries(arr){
-        const binId = getBinId();
-        if(!binId){
-            // 처음: 새 bin 생성
-            try {
-                const res = await fetch('https://api.jsonbin.io/v3/b', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': JSONBIN_API_KEY,
-                        'X-Bin-Name': 'stealth-guestbook',
-                        'X-Bin-Private': 'true'
-                    },
-                    body: JSON.stringify(arr)
-                });
-                const data = await res.json();
-                if(data.metadata && data.metadata.id){
-                    saveBinId(data.metadata.id);
-                }
-            } catch(e){ console.error('JSONBin 생성 오류', e); }
-        } else {
-            // 기존 bin 업데이트
-            try {
-                await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Master-Key': JSONBIN_API_KEY
-                    },
-                    body: JSON.stringify(arr)
-                });
-            } catch(e){ console.error('JSONBin 저장 오류', e); }
+        try{
+            const id = await ensureBin();
+            const res = await fetch(`${JSONBIN_BASE}/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': JSONBIN_MASTER_KEY
+                },
+                body: JSON.stringify(arr)
+            });
+            if(!res.ok) throw new Error('저장 실패');
+            return true;
+        }catch(e){
+            console.error(e);
+            alert('글 저장에 실패했습니다. 첨부파일 용량이 너무 크거나(jsonbin 무료 한도 초과) 네트워크 문제일 수 있습니다.');
+            return false;
         }
     }
 
@@ -1937,15 +1955,19 @@
         err.style.display = 'none';
 
         const submitBtn = document.querySelector('.btn-submit');
-        submitBtn.disabled = true;
-        submitBtn.textContent = '저장 중…';
+        const prevLabel = submitBtn ? submitBtn.textContent : '';
+        if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = '등록 중...'; }
 
         const entries = await loadEntries();
 
         if(editingId){
             const idx = entries.findIndex(e => e.id === editingId);
             if(idx !== -1){
-                if(entries[idx].pw !== pw){ showError('비밀번호가 일치하지 않습니다.'); submitBtn.disabled=false; submitBtn.textContent='수정 완료'; return; }
+                if(entries[idx].pw !== pw){
+                    showError('비밀번호가 일치하지 않습니다.');
+                    if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = prevLabel; }
+                    return;
+                }
                 entries[idx].nick = nick;
                 entries[idx].type = type;
                 entries[idx].body = body;
@@ -1955,6 +1977,7 @@
             editingId = null;
             document.getElementById('gb-form-title').textContent = '✏️ 글 남기기';
             document.getElementById('gb-cancel-btn').style.display = 'none';
+            document.querySelector('.btn-submit').textContent = '등록';
         } else {
             entries.unshift({
                 id: Date.now().toString(),
@@ -1965,9 +1988,9 @@
             });
         }
 
-        await saveEntries(entries);
-        submitBtn.disabled = false;
-        submitBtn.textContent = '등록';
+        const ok = await saveEntries(entries);
+        if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = '등록'; }
+        if(!ok) return;
         clearForm();
         await renderList();
     }
@@ -1993,10 +2016,10 @@
     }
 
     async function renderList(){
-        const list    = document.getElementById('gb-list');
-        const countEl = document.getElementById('gb-count');
-        list.innerHTML = '<div class="gb-empty"><span>⏳</span>불러오는 중...</div>';
+        const list = document.getElementById('gb-list');
+        if(list) list.innerHTML = '<div class="gb-empty"><span>⏳</span>불러오는 중...</div>';
         const entries = await loadEntries();
+        const countEl = document.getElementById('gb-count');
         const bugs    = entries.filter(e => e.type==='bug').length;
         const guests  = entries.filter(e => e.type==='guest').length;
         countEl.innerHTML = `총 <strong>${entries.length}개</strong> (방명록 ${guests} · 버그제보 ${bugs})`;
@@ -2071,7 +2094,10 @@
         if(idx === -1){ closeModal(); return; }
         if(entries[idx].pw !== pw){ document.getElementById('modal-error').style.display='block'; return; }
         if(modalAction === 'delete'){
-            entries.splice(idx, 1); await saveEntries(entries); closeModal(); await renderList();
+            entries.splice(idx, 1);
+            await saveEntries(entries);
+            closeModal();
+            await renderList();
         } else if(modalAction === 'edit'){
             const e = entries[idx];
             document.getElementById('gb-nick').value = e.nick;
@@ -2100,7 +2126,7 @@
     document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
 
     // 초기 렌더링
-    renderList();  // async지만 top-level에서 호출 가능 (반환값 무시)
+    renderList();
 </script>
 </body>
 </html>
