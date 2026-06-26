@@ -1822,7 +1822,7 @@
                 'X-Master-Key': JSONBIN_MASTER_KEY,
                 'X-Bin-Name': 'stealth_affair_guestbook'
             },
-            body: JSON.stringify([])
+            body: JSON.stringify({ list: [] })
         });
         if(!res.ok){
             const t = await res.text().catch(()=> '');
@@ -1860,7 +1860,7 @@
                 throw new Error(`불러오기 실패 (HTTP ${res.status}): ${t}`);
             }
             const data = await res.json();
-            return data.record || [];
+            return (data.record && data.record.list) || [];
         }catch(e){
             console.error('[방명록 loadEntries 오류]', e);
             return [];
@@ -1876,7 +1876,7 @@
                     'Content-Type': 'application/json',
                     'X-Master-Key': JSONBIN_MASTER_KEY
                 },
-                body: JSON.stringify(arr)
+                body: JSON.stringify({ list: arr })
             });
             if(!res.ok){
                 const t = await res.text().catch(()=> '');
