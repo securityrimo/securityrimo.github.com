@@ -2452,15 +2452,90 @@ function togglePatch(header) {
     item.classList.toggle('open');
 }
 
-/* ── 스토리지 ── */
-const STORE_KEY = 'fw_guestbook_entries';
-function loadEntries() {
-    try { const r = localStorage.getItem(STORE_KEY); return r ? JSON.parse(r) : []; }
-    catch(e) { return []; }
+/* ── 스토리지 (jsonbin.io 공유 저장소) ── */
+// 모든 방문자가 같은 글 목록을 보도록 localStorage 대신 jsonbin.io의 공유 Bin을 사용합니다.
+const JSONBIN_ACCESS_KEY = '$2a$10$KzjFp1rz3SHifSb11kT82OPt0ByMMp3YJte1a.5Gm3aq3DPxAFup6';
+const JSONBIN_BASE = 'https://api.jsonbin.io/v3/b';
+// 최초 1회 자동으로 Bin이 생성됩니다. 생성 후 화면에 나오는 ID를 복사해서 아래에 고정으로 넣고
+// 파일을 다시 업로드하면, 이후로는 새 Bin이 생기지 않고 항상 같은 저장소를 씁니다.
+let GB_BIN_ID = '';
+
+async function ensureBin(){
+    if(GB_BIN_ID) return GB_BIN_ID;
+    const cached = localStorage.getItem('fw_gb_binid_temp');
+    if(cached){ GB_BIN_ID = cached; return GB_BIN_ID; }
+    const res = await fetch(JSONBIN_BASE, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Access-Key': JSONBIN_ACCESS_KEY,
+            'X-Bin-Name': 'future_wars_guestbook'
+        },
+        body: JSON.stringify({ list: [] })
+    });
+    if(!res.ok){
+        const t = await res.text().catch(()=> '');
+        throw new Error(`bin 생성 실패 (HTTP ${res.status}): ${t}`);
+    }
+    const data = await res.json();
+    GB_BIN_ID = data.metadata.id;
+    localStorage.setItem('fw_gb_binid_temp', GB_BIN_ID);
+    showBinIdNotice(GB_BIN_ID);
+    return GB_BIN_ID;
 }
-function saveEntries(arr) {
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(arr)); }
-    catch(e) { showError('저장 공간이 부족합니다. 첨부 파일 크기를 줄여주세요.'); }
+
+function showBinIdNotice(id){
+    console.log('[방명록] 새 Bin이 생성되었습니다. 코드의 GB_BIN_ID 값에 다음 ID를 고정으로 입력하세요:', id);
+    const list = document.getElementById('gb-list');
+    if(list && list.parentNode && !document.getElementById('gb-bin-notice')){
+        const div = document.createElement('div');
+        div.id = 'gb-bin-notice';
+        div.style.cssText = 'background:#1a1408;border:1px solid #58a6ff;color:#58a6ff;padding:14px 16px;border-radius:6px;margin-bottom:16px;font-size:0.85rem;line-height:1.6;';
+        div.innerHTML = `⚠️ 방명록 공유 저장소가 처음 생성되었습니다.<br>
+            모든 방문자가 같은 글을 보려면, 코드의 <code>GB_BIN_ID</code> 값에 아래 ID를 고정으로 입력한 뒤 파일을 다시 배포해주세요.<br>
+            <strong style="user-select:all">${id}</strong>`;
+        list.parentNode.insertBefore(div, list);
+    }
+}
+
+async function loadEntries() {
+    try {
+        const id = await ensureBin();
+        const res = await fetch(`${JSONBIN_BASE}/${id}/latest`, {
+            headers: { 'X-Access-Key': JSONBIN_ACCESS_KEY }
+        });
+        if(!res.ok){
+            const t = await res.text().catch(()=> '');
+            throw new Error(`불러오기 실패 (HTTP ${res.status}): ${t}`);
+        }
+        const data = await res.json();
+        return (data.record && data.record.list) || [];
+    } catch(e) {
+        console.error('[방명록 loadEntries 오류]', e);
+        return [];
+    }
+}
+async function saveEntries(arr) {
+    try {
+        const id = await ensureBin();
+        const res = await fetch(`${JSONBIN_BASE}/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Access-Key': JSONBIN_ACCESS_KEY
+            },
+            body: JSON.stringify({ list: arr })
+        });
+        if(!res.ok){
+            const t = await res.text().catch(()=> '');
+            throw new Error(`저장 실패 (HTTP ${res.status}): ${t}`);
+        }
+        return true;
+    } catch(e) {
+        console.error('[방명록 saveEntries 오류]', e);
+        alert('글 저장에 실패했습니다.\n\n원인: ' + (e && e.message ? e.message : e) + '\n\n(브라우저 콘솔(F12)에서 더 자세한 내용을 확인할 수 있습니다)');
+        return false;
+    }
 }
 
 /* ── 날짜 포맷 ── */
@@ -2547,7 +2622,7 @@ if(dropZone) {
 /* ── 등록/수정 상태 ── */
 let editingId = null;
 
-function submitEntry() {
+async function submitEntry() {
     const nick = document.getElementById('gb-nick').value.trim();
     const pw   = document.getElementById('gb-pw').value;
     const type = document.getElementById('gb-type').value;
@@ -2559,12 +2634,20 @@ function submitEntry() {
     if(!body) { showError('내용을 입력해주세요.'); return; }
     err.style.display = 'none';
 
-    const entries = loadEntries();
+    const submitBtn = document.querySelector('.btn-submit');
+    const prevLabel = submitBtn ? submitBtn.textContent : '';
+    if(submitBtn){ submitBtn.disabled = true; submitBtn.textContent = '등록 중...'; }
+
+    const entries = await loadEntries();
 
     if(editingId) {
         const idx = entries.findIndex(e => e.id === editingId);
         if(idx !== -1) {
-            if(entries[idx].pw !== pw) { showError('비밀번호가 일치하지 않습니다.'); return; }
+            if(entries[idx].pw !== pw) {
+                showError('비밀번호가 일치하지 않습니다.');
+                if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = prevLabel; }
+                return;
+            }
             entries[idx].nick = nick;
             entries[idx].type = type;
             entries[idx].body = body;
@@ -2585,9 +2668,11 @@ function submitEntry() {
         });
     }
 
-    saveEntries(entries);
+    const ok = await saveEntries(entries);
+    if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = '등록'; }
+    if(!ok) return;
     clearForm();
-    renderList();
+    await renderList();
 }
 
 function showError(msg) {
@@ -2611,9 +2696,10 @@ function cancelEdit() {
 }
 
 /* ── 렌더링 ── */
-function renderList() {
-    const entries = loadEntries();
-    const list    = document.getElementById('gb-list');
+async function renderList() {
+    const list = document.getElementById('gb-list');
+    if(list) list.innerHTML = '<div class="gb-empty"><span>⏳</span>불러오는 중...</div>';
+    const entries = await loadEntries();
     const countEl = document.getElementById('gb-count');
     const bugs    = entries.filter(e => e.type==='bug').length;
     const guests  = entries.filter(e => e.type==='guest').length;
@@ -2685,14 +2771,17 @@ function closeModal() {
     document.getElementById('pw-modal').style.display = 'none';
     modalAction = null; modalTargetId = null;
 }
-function confirmModal() {
+async function confirmModal() {
     const pw = document.getElementById('modal-pw').value;
-    const entries = loadEntries();
+    const entries = await loadEntries();
     const idx = entries.findIndex(e => e.id === modalTargetId);
     if(idx === -1) { closeModal(); return; }
     if(entries[idx].pw !== pw) { document.getElementById('modal-error').style.display='block'; return; }
     if(modalAction === 'delete') {
-        entries.splice(idx, 1); saveEntries(entries); closeModal(); renderList();
+        entries.splice(idx, 1);
+        await saveEntries(entries);
+        closeModal();
+        await renderList();
     } else if(modalAction === 'edit') {
         const e = entries[idx];
         document.getElementById('gb-nick').value = e.nick;
