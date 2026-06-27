@@ -1,0 +1,1679 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Might and Magic I: Enhanced — 한국어판</title>
+    <style>
+        :root {
+            --bg:        #080608;
+            --surface:   #100c10;
+            --surface2:  #180e18;
+            --border:    #2e1f2e;
+            --text:      #c4bcc8;
+            --muted:     #6a5a72;
+            --ruby:      #c04060;
+            --ruby-lt:   #e06080;
+            --ruby-dk:   #7a1830;
+            --sapphire:  #4080c0;
+            --gold:      #c89840;
+            --gold-lt:   #e8b860;
+            --gold-dk:   #6a4810;
+            --rune:      #a060c0;
+            --rune-lt:   #c080e0;
+            --white:     #f0eaf4;
+            --danger:    #e05c5c;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: "Segoe UI", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        a { color: var(--gold); text-decoration: none; }
+        a:hover { color: var(--gold-lt); text-decoration: underline; }
+
+        /* ── 히어로 ── */
+        .hero {
+            position: relative;
+            background:
+                radial-gradient(ellipse at 50% -10%, #2a0828 0%, #080608 60%),
+                radial-gradient(ellipse at 20% 100%, #0a0418 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, #100610 0%, transparent 50%);
+            border-bottom: 1px solid var(--border);
+            padding: 72px 24px 56px;
+            text-align: center;
+            overflow: hidden;
+        }
+        /* 별 레이어 */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 10% 20%, rgba(200,152,64,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 30% 10%, rgba(200,152,64,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 55% 35%, rgba(200,152,64,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 72% 15%, rgba(200,152,64,0.6) 0%, transparent 100%),
+                radial-gradient(1px 1px at 88% 28%, rgba(200,152,64,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 18% 60%, rgba(160,96,192,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 45% 50%, rgba(160,96,192,0.3) 0%, transparent 100%),
+                radial-gradient(1px 1px at 92% 55%, rgba(160,96,192,0.5) 0%, transparent 100%),
+                radial-gradient(1px 1px at 63% 70%, rgba(64,128,192,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 78% 80%, rgba(64,128,192,0.3) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        /* 마법진 패턴 */
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(
+                    60deg,
+                    transparent,
+                    transparent 32px,
+                    rgba(160,96,192,0.018) 32px,
+                    rgba(160,96,192,0.018) 33px
+                ),
+                repeating-linear-gradient(
+                    -60deg,
+                    transparent,
+                    transparent 32px,
+                    rgba(200,152,64,0.015) 32px,
+                    rgba(200,152,64,0.015) 33px
+                );
+            pointer-events: none;
+        }
+
+        /* 상단 룬 장식 */
+        .hero-rune-bar {
+            position: relative; z-index: 1;
+            font-size: 0.8rem;
+            letter-spacing: 0.35em;
+            color: var(--rune);
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .hero-eyebrow {
+            position: relative; z-index: 1;
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+        }
+        .hero-eyebrow::before,
+        .hero-eyebrow::after {
+            content: '';
+            display: inline-block;
+            width: 48px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-dk));
+        }
+        .hero-eyebrow::after {
+            background: linear-gradient(90deg, var(--gold-dk), transparent);
+        }
+
+        .hero h1 {
+            position: relative; z-index: 1;
+            font-size: clamp(1.9rem, 5.5vw, 3.2rem);
+            color: var(--white);
+            font-weight: 800;
+            letter-spacing: -0.01em;
+            line-height: 1.2;
+            margin-bottom: 8px;
+            text-shadow: 0 0 40px rgba(160,96,192,0.35), 0 0 80px rgba(192,64,96,0.18);
+        }
+        .hero h1 .title-might { color: var(--ruby-lt); }
+        .hero h1 .title-magic { color: var(--rune-lt); }
+        .hero h1 .title-num   { color: var(--gold-lt); }
+
+        .hero-sub {
+            position: relative; z-index: 1;
+            font-size: 1rem;
+            color: var(--muted);
+            margin-bottom: 10px;
+            letter-spacing: 0.08em;
+        }
+        .hero-subtitle {
+            position: relative; z-index: 1;
+            font-size: 0.88rem;
+            color: var(--rune);
+            margin-bottom: 32px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .badges {
+            position: relative; z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        .badge {
+            background: rgba(16,12,16,0.8);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 5px 14px;
+            font-size: 0.8rem;
+            color: var(--text);
+            backdrop-filter: blur(4px);
+        }
+        .badge strong { color: var(--gold-lt); }
+
+        /* ── 컨테이너 ── */
+        .container {
+            max-width: 840px;
+            margin: 0 auto;
+            padding: 48px 20px;
+        }
+
+        /* ── 탭 ── */
+        .tab-nav {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 32px;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 10px 22px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.03em;
+            transition: color 0.15s, border-color 0.15s;
+            font-family: inherit;
+        }
+        .tab-btn:hover { color: var(--text); }
+        .tab-btn.active { color: var(--gold-lt); border-bottom-color: var(--gold); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── 섹션 헤딩 ── */
+        .section { margin-bottom: 52px; }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::before {
+            content: '◆';
+            color: var(--ruby);
+            font-size: 0.7em;
+        }
+
+        /* ── 소개 텍스트 ── */
+        .intro-body p {
+            font-size: 1.01rem;
+            color: var(--text);
+            margin-bottom: 14px;
+        }
+        .intro-body p:last-child { margin-bottom: 0; }
+        .intro-body strong { color: var(--gold-lt); }
+        .intro-body em { color: var(--rune-lt); font-style: normal; }
+
+        /* ── 직업 카드 그리드 ── */
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 4px;
+        }
+        .class-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .class-card:hover {
+            border-color: var(--ruby-dk);
+            background: var(--surface2);
+        }
+        .class-icon { font-size: 1.6rem; line-height: 1; }
+        .class-name { font-size: 0.92rem; font-weight: 700; color: var(--white); }
+        .class-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+        .class-tag {
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ruby);
+        }
+
+        /* ── 스토리 장면 ── */
+        .story-scenes { display: flex; flex-direction: column; gap: 0; }
+        .scene-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            background: var(--surface);
+        }
+        .scene-block.reverse { direction: rtl; }
+        .scene-block.reverse > * { direction: ltr; }
+        @media (max-width: 600px) {
+            .scene-block, .scene-block.reverse { grid-template-columns: 1fr; direction: ltr; }
+        }
+        .scene-svg-wrap { overflow: hidden; background: #04020a; }
+        .scene-svg-wrap svg { display: block; width: 100%; height: auto; }
+        .scene-info {
+            padding: 22px 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: var(--surface2);
+            border-left: 1px solid var(--border);
+        }
+        .scene-block.reverse .scene-info { border-left: none; border-right: 1px solid var(--border); }
+        @media (max-width: 600px) {
+            .scene-info { border-left: none; border-top: 1px solid var(--border); }
+            .scene-block.reverse .scene-info { border-right: none; border-top: 1px solid var(--border); }
+        }
+        .scene-num { font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ruby); margin-bottom: 6px; }
+        .scene-title { font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 10px; line-height: 1.3; }
+        .scene-desc { font-size: 0.88rem; color: var(--text); line-height: 1.7; }
+        .scene-desc strong { color: var(--gold-lt); }
+        .scene-tag {
+            display: inline-block;
+            margin-top: 12px;
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            padding: 3px 8px;
+        }
+
+        /* ── 스토리 요약 카드 ── */
+        .story-summary {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--ruby-dk);
+            border-radius: 10px;
+            padding: 22px 24px;
+            font-size: 0.97rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+        .story-summary p { margin-bottom: 12px; }
+        .story-summary p:last-child { margin-bottom: 0; }
+        .story-summary strong { color: var(--gold-lt); }
+        .story-summary em { color: var(--rune-lt); font-style: normal; }
+
+        /* ── 진행률 테이블 ── */
+        .progress-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+        .progress-table th {
+            text-align: left;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: 8px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        .progress-table td {
+            padding: 11px 14px;
+            border-bottom: 1px solid rgba(46,31,46,0.5);
+            color: var(--text);
+        }
+        .progress-table tr:last-child td { border-bottom: none; }
+        .progress-table tr:hover td { background: var(--surface2); }
+        .pct {
+            font-weight: 700;
+            color: var(--gold-lt);
+            font-variant-numeric: tabular-nums;
+        }
+        .bar-wrap {
+            width: 120px;
+            height: 5px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--ruby-dk), var(--ruby));
+            border-radius: 3px;
+        }
+
+        /* ── 다운로드 버튼 ── */
+        .dl-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .dl-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1 1 220px;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #180814 0%, #0e080e 100%);
+            border: 1px solid var(--ruby-dk);
+            border-radius: 6px;
+            color: var(--white);
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+        }
+        .dl-btn:hover {
+            border-color: var(--ruby);
+            box-shadow: 0 0 16px rgba(192,64,96,0.3);
+            color: var(--white);
+            text-decoration: none;
+        }
+        .dl-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .dl-text { display: flex; flex-direction: column; line-height: 1.3; }
+        .dl-label { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ruby); }
+        .dl-name  { font-size: 0.9rem; color: var(--white); font-weight: 600; }
+
+        /* ── 파일 목록 ── */
+        .file-list { display: grid; gap: 10px; }
+        .file-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 14px 16px;
+        }
+        .file-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 1px; }
+        .file-name {
+            font-family: "Consolas", "Courier New", monospace;
+            font-size: 0.86rem;
+            color: var(--gold-lt);
+            margin-bottom: 3px;
+        }
+        .file-desc { font-size: 0.86rem; color: var(--muted); }
+
+        /* ── 장단점 카드 ── */
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        @media (max-width: 540px) { .pros-cons { grid-template-columns: 1fr; } }
+        .pc-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px;
+        }
+        .pc-card h3 {
+            font-size: 0.78rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .pc-card.pros h3 { color: var(--gold); }
+        .pc-card.cons h3 { color: var(--danger); }
+        .pc-card ul { list-style: none; padding: 0; }
+        .pc-card li {
+            padding: 6px 0;
+            font-size: 0.91rem;
+            color: var(--text);
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid rgba(46,31,46,0.4);
+        }
+        .pc-card li:last-child { border-bottom: none; }
+        .pc-card.pros li::before { content: '✦'; color: var(--gold); flex-shrink: 0; }
+        .pc-card.cons li::before { content: '▲'; color: var(--danger); flex-shrink: 0; font-size: 0.75em; margin-top: 3px; }
+
+        /* ── 이력 타임라인 ── */
+        .timeline { position: relative; padding-left: 24px; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 6px; top: 6px; bottom: 6px;
+            width: 1px;
+            background: var(--border);
+        }
+        .tl-item { position: relative; margin-bottom: 22px; }
+        .tl-item::before {
+            content: '';
+            position: absolute;
+            left: -21px; top: 6px;
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--ruby-dk);
+            border: 2px solid var(--ruby);
+        }
+        .tl-item.latest::before { background: var(--ruby); box-shadow: 0 0 8px var(--ruby); }
+        .tl-ver { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ruby); margin-bottom: 2px; }
+        .tl-date { font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; }
+        .tl-desc { font-size: 0.92rem; color: var(--text); }
+
+        /* ── notice ── */
+        .notice {
+            background: rgba(192,64,96,0.07);
+            border: 1px solid var(--ruby-dk);
+            border-radius: 6px;
+            padding: 14px 18px;
+            font-size: 0.88rem;
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+        .notice strong { color: var(--gold-lt); }
+
+        /* ── ini 박스 ── */
+        .ini-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 14px 16px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.9;
+            color: var(--muted);
+            margin: 12px 0;
+            overflow-x: auto;
+        }
+        .ini-comment { color: #3d2b4e; }
+        .ini-key     { color: var(--gold-lt); }
+        .ini-val     { color: #60c88a; }
+        .ini-section { color: #c080e0; font-weight: bold; }
+
+        /* ── 팁 목록 ── */
+        .tip-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+        .tip-list li {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--ruby-dk);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 0.92rem;
+            color: var(--text);
+            line-height: 1.65;
+        }
+        .tip-list li strong { color: var(--gold-lt); }
+
+        /* ── 방명록 ── */
+        .gb-form {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 30px;
+        }
+        .gb-form h3 {
+            color: #ffffff;
+            font-size: 1.05rem;
+            margin: 0 0 16px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .gb-row { display: flex; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+        .gb-field { display: flex; flex-direction: column; gap: 5px; flex: 1 1 160px; }
+        .gb-field label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.03em; }
+        .gb-field input,
+        .gb-field select,
+        .gb-field textarea {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 0.95rem;
+            padding: 9px 12px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+        .gb-field input:focus,
+        .gb-field select:focus,
+        .gb-field textarea:focus { outline: none; border-color: var(--ruby); }
+        .gb-field select option { background: var(--surface); }
+        .gb-actions { display: flex; gap: 10px; margin-top: 4px; justify-content: flex-end; }
+        .btn-submit {
+            padding: 10px 24px;
+            background: var(--ruby);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-submit:hover { background: var(--ruby-lt); }
+        .btn-cancel {
+            padding: 10px 20px;
+            background: none;
+            color: var(--muted);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .btn-cancel:hover { border-color: var(--muted); color: var(--text); }
+        .gb-list { display: flex; flex-direction: column; gap: 14px; }
+        .gb-entry {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 20px;
+        }
+        .gb-entry.type-bug  { border-left: 4px solid var(--danger); }
+        .gb-entry.type-guest { border-left: 4px solid var(--ruby); }
+        .gb-entry-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .gb-nick { font-weight: bold; color: #ffffff; font-size: 0.95rem; }
+        .gb-badge {
+            font-size: 0.72rem;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 20px;
+            letter-spacing: 0.04em;
+        }
+        .badge-bug   { background: rgba(224,92,92,0.12); color: var(--danger); border: 1px solid var(--danger); }
+        .badge-guest { background: rgba(192,64,96,0.1); color: var(--ruby-lt); border: 1px solid var(--ruby-dk); }
+        .gb-date { margin-left: auto; font-size: 0.78rem; color: var(--muted); }
+        .gb-body { font-size: 0.95rem; color: var(--text); line-height: 1.65; white-space: pre-wrap; word-break: break-all; }
+        .gb-empty { text-align: center; padding: 40px 20px; color: var(--muted); font-size: 0.9rem; }
+
+        /* ── footer ── */
+        footer {
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 28px 20px;
+            font-size: 0.83rem;
+            color: var(--muted);
+        }
+        footer strong { color: var(--ruby); }
+
+        /* ── 세계관 지도 표시 ── */
+        .world-svg-wrap {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            background: #04020a;
+            margin-bottom: 20px;
+        }
+        .world-svg-wrap svg { display: block; width: 100%; height: auto; }
+
+        /* ── 특징 배지 ── */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .feature-icon { font-size: 1.4rem; flex-shrink: 0; line-height: 1.2; }
+        .feature-title { font-size: 0.9rem; font-weight: bold; color: var(--white); margin-bottom: 3px; }
+        .feature-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════ 히어로 ═══════════════ -->
+<div class="hero">
+    <div class="hero-rune-bar">✦ ᛗ ᛁ ᚷ ᚺ ᛏ ᚨ ᚾ ᛞ ᛗ ᚨ ᚷ ᛁ ᚲ ✦</div>
+    <div class="hero-eyebrow">ScummVM · Enhanced Edition · 한국어 패치</div>
+    <h1>
+        <span class="title-might">Might</span> and <span class="title-magic">Magic</span>
+        <span class="title-num">I</span><br>
+        Secret of the Inner Sanctum
+    </h1>
+    <div class="hero-sub">마이트 앤 매직 1 — 내부 성소의 비밀</div>
+    <div class="hero-subtitle">"여섯 영웅이 베일에 싸인 대륙 밴의 비밀을 밝혀야 한다."</div>
+    <div class="badges">
+        <span class="badge">출시 <strong>1986</strong></span>
+        <span class="badge">개발 <strong>New World Computing</strong></span>
+        <span class="badge">엔진 <strong>ScummVM MM1</strong></span>
+        <span class="badge">패치 <strong>v0.3.0-alpha</strong></span>
+        <span class="badge">제작 <strong>securityrimo</strong></span>
+    </div>
+</div>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<div class="container">
+
+    <!-- 탭 네비게이션 -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('intro',this)">⚔️ 게임 소개</button>
+        <button class="tab-btn" onclick="switchTab('story',this)">📜 스토리</button>
+        <button class="tab-btn" onclick="switchTab('install',this)">📦 다운로드/설치</button>
+        <button class="tab-btn" onclick="switchTab('history',this)">📋 패치 이력</button>
+        <button class="tab-btn" onclick="switchTab('guestbook',this)">📖 방명록</button>
+    </div>
+
+    <!-- ─── TAB: 소개 ─── -->
+    <div id="tab-intro" class="tab-panel active">
+
+        <!-- 게임 소개 -->
+        <div class="section">
+            <div class="section-title">게임 소개</div>
+            <div class="intro-body">
+                <p>
+                    <strong>Might and Magic I: Secret of the Inner Sanctum</strong>은 1986년
+                    Jon Van Caneghem이 설립한 <strong>New World Computing</strong>에서 개발한
+                    클래식 CRPG의 원점입니다. 애플 II용으로 처음 출시된 이 게임은 이후 DOS,
+                    Apple Macintosh 등 다양한 플랫폼으로 이식되었으며,
+                    이후 오랫동안 이어질 마이트 앤 매직 시리즈의 초석을 닦았습니다.
+                </p>
+                <p>
+                    플레이어는 <strong>최대 6인으로 구성된 모험 파티</strong>를 이끌어
+                    미지의 대륙 <em>밴(Varn)</em>을 탐험합니다. 미로처럼 얽힌 던전,
+                    광활한 황야, 고대 도시와 마법 탑을 누비며 강력한 적들과 싸우고
+                    수수께끼를 풀어 세계의 숨겨진 비밀을 밝혀야 합니다.
+                </p>
+                <p>
+                    이번 <strong>한국어판</strong>은 ScummVM의 공식 MM1 Enhanced 엔진을 기반으로
+                    C++ 엔진 직접 수정, Python 번역 파이프라인, <strong>Galmuri9.ttf</strong>
+                    TTF 렌더링을 활용하여 제작되었습니다. UI 텍스트·아이템명·몬스터명·
+                    지명을 포함한 인게임 전반을 한글로 즐길 수 있습니다.
+                </p>
+            </div>
+        </div>
+
+        <!-- 세계 지도 SVG -->
+        <div class="section">
+            <div class="section-title">🗺️ 밴 대륙 탐험 지도</div>
+            <div class="world-svg-wrap">
+                <svg viewBox="0 0 820 360" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="mapbg" cx="50%" cy="50%" r="70%">
+                            <stop offset="0%" stop-color="#0c0618"/>
+                            <stop offset="100%" stop-color="#04020a"/>
+                        </radialGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                        </filter>
+                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(160,96,192,0.08)" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect width="820" height="360" fill="url(#mapbg)"/>
+                    <rect width="820" height="360" fill="url(#grid)"/>
+
+                    <!-- 대륙 외곽 (밴) -->
+                    <path d="M80,50 Q180,30 340,40 Q500,50 620,35 Q720,25 780,60
+                             L790,80 Q800,120 795,160 Q800,200 790,240
+                             Q780,290 740,310 Q680,330 580,320
+                             Q480,310 380,320 Q280,330 200,315
+                             Q120,300 90,270 Q60,240 65,200
+                             Q55,160 60,120 Q65,80 80,50Z"
+                          fill="#0e0818" stroke="#2e1f3e" stroke-width="1.5"/>
+
+                    <!-- 산악 지대 (북부) -->
+                    <g fill="#1a1030" stroke="#2e1f4e" stroke-width="0.8">
+                        <polygon points="140,75 155,50 170,75"/>
+                        <polygon points="165,72 178,52 191,72"/>
+                        <polygon points="190,68 202,48 214,68"/>
+                        <polygon points="580,45 595,22 610,45"/>
+                        <polygon points="605,43 618,24 631,43"/>
+                        <polygon points="630,40 644,20 658,40"/>
+                        <polygon points="655,42 668,23 681,42"/>
+                    </g>
+                    <!-- 산 눈 하이라이트 -->
+                    <g fill="#3a2060" opacity="0.6">
+                        <polygon points="155,55 162,62 148,62"/>
+                        <polygon points="595,28 602,36 588,36"/>
+                    </g>
+
+                    <!-- 숲 지역 (서부) -->
+                    <g fill="#0e2418" stroke="#1a3822" stroke-width="0.5">
+                        <ellipse cx="105" cy="160" rx="18" ry="22"/>
+                        <ellipse cx="120" cy="150" rx="14" ry="18"/>
+                        <ellipse cx="98" cy="185" rx="15" ry="19"/>
+                        <ellipse cx="115" cy="195" rx="16" ry="20"/>
+                        <ellipse cx="133" cy="172" rx="13" ry="16"/>
+                    </g>
+                    <!-- 숲 하이라이트 -->
+                    <g fill="#14381e" opacity="0.7">
+                        <ellipse cx="105" cy="152" rx="10" ry="8"/>
+                        <ellipse cx="120" cy="143" rx="8" ry="6"/>
+                    </g>
+
+                    <!-- 사막 지대 (동남부) -->
+                    <ellipse cx="660" cy="250" rx="90" ry="55" fill="#1a1408" stroke="#2a1e08" stroke-width="1"/>
+                    <ellipse cx="660" cy="250" rx="90" ry="55" fill="none" stroke="#3a2810" stroke-width="0.5" stroke-dasharray="4,4"/>
+                    <!-- 사막 모래 물결 -->
+                    <path d="M580,240 Q610,235 640,242 Q670,248 700,240 Q730,233 750,240" fill="none" stroke="#3a2810" stroke-width="0.8" opacity="0.6"/>
+                    <path d="M590,255 Q620,250 650,257 Q680,263 720,255" fill="none" stroke="#3a2810" stroke-width="0.8" opacity="0.5"/>
+
+                    <!-- 늪지 (남서) -->
+                    <g opacity="0.7">
+                        <ellipse cx="160" cy="280" rx="45" ry="28" fill="#0a1810" stroke="#1a2a18" stroke-width="1"/>
+                        <circle cx="145" cy="278" r="4" fill="#1e2a10" opacity="0.8"/>
+                        <circle cx="162" cy="272" r="3" fill="#1e2a10" opacity="0.6"/>
+                        <circle cx="178" cy="285" r="4" fill="#1e2a10" opacity="0.7"/>
+                    </g>
+
+                    <!-- 주요 도시 마커 -->
+                    <!-- Sorpigal (시작 마을) -->
+                    <g filter="url(#glow)">
+                        <circle cx="220" cy="180" r="8" fill="#c89840" stroke="#e8b860" stroke-width="1.5"/>
+                        <circle cx="220" cy="180" r="3" fill="#fff8e8"/>
+                    </g>
+                    <text x="232" y="176" fill="#e8b860" font-size="11" font-family="'Segoe UI',sans-serif" font-weight="bold">소르피갈</text>
+                    <text x="232" y="188" fill="#6a5a72" font-size="9" font-family="monospace">Sorpigal — 시작 마을</text>
+
+                    <!-- Dusk (도시) -->
+                    <g filter="url(#glow)">
+                        <circle cx="400" cy="140" r="7" fill="#c89840" stroke="#e8b860" stroke-width="1.2"/>
+                        <circle cx="400" cy="140" r="2.5" fill="#fff8e8"/>
+                    </g>
+                    <text x="412" y="136" fill="#e8b860" font-size="10.5" font-family="'Segoe UI',sans-serif" font-weight="bold">더스크</text>
+                    <text x="412" y="147" fill="#6a5a72" font-size="9" font-family="monospace">Dusk</text>
+
+                    <!-- Dawn (도시) -->
+                    <g filter="url(#glow)">
+                        <circle cx="540" cy="155" r="7" fill="#c89840" stroke="#e8b860" stroke-width="1.2"/>
+                        <circle cx="540" cy="155" r="2.5" fill="#fff8e8"/>
+                    </g>
+                    <text x="552" y="151" fill="#e8b860" font-size="10.5" font-family="'Segoe UI',sans-serif" font-weight="bold">던</text>
+                    <text x="552" y="162" fill="#6a5a72" font-size="9" font-family="monospace">Dawn</text>
+
+                    <!-- Erliquin (도시) -->
+                    <g filter="url(#glow)">
+                        <circle cx="300" cy="255" r="6" fill="#a060c0" stroke="#c080e0" stroke-width="1.2"/>
+                        <circle cx="300" cy="255" r="2" fill="#e0c0f8"/>
+                    </g>
+                    <text x="312" y="251" fill="#c080e0" font-size="10" font-family="'Segoe UI',sans-serif" font-weight="bold">얼리퀸</text>
+                    <text x="312" y="262" fill="#6a5a72" font-size="9" font-family="monospace">Erliquin</text>
+
+                    <!-- Inner Sanctum (보스 지역) -->
+                    <g filter="url(#glow)">
+                        <polygon points="480,210 490,192 500,210 490,228" fill="none" stroke="#c04060" stroke-width="2"/>
+                        <circle cx="490" cy="210" r="5" fill="#c04060" opacity="0.8"/>
+                    </g>
+                    <text x="506" y="206" fill="#e06080" font-size="10.5" font-family="'Segoe UI',sans-serif" font-weight="bold">내부 성소</text>
+                    <text x="506" y="217" fill="#6a5a72" font-size="9" font-family="monospace">Inner Sanctum ??</text>
+
+                    <!-- 던전 아이콘 (Castle Doom) -->
+                    <rect x="355" y="278" width="22" height="16" fill="#1a1030" stroke="#2e1f4e" stroke-width="1.2" rx="2"/>
+                    <rect x="353" y="272" width="6" height="10" fill="#1a1030" stroke="#2e1f4e" stroke-width="1"/>
+                    <rect x="373" y="272" width="6" height="10" fill="#1a1030" stroke="#2e1f4e" stroke-width="1"/>
+                    <text x="340" y="308" fill="#6a5a72" font-size="9" font-family="monospace">Castle Doom</text>
+                    <text x="340" y="318" fill="#a060c0" font-size="8.5" font-family="monospace">던전 ·심층부</text>
+
+                    <!-- 도로/경로 -->
+                    <path d="M220,180 Q310,155 400,140" fill="none" stroke="#2e1f2e" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <path d="M400,140 Q470,148 540,155" fill="none" stroke="#2e1f2e" stroke-width="1.5" stroke-dasharray="6,4"/>
+                    <path d="M220,180 Q260,218 300,255" fill="none" stroke="#2e1f2e" stroke-width="1.2" stroke-dasharray="4,4"/>
+                    <path d="M300,255 Q370,265 366,284" fill="none" stroke="#2e1f2e" stroke-width="1" stroke-dasharray="3,5"/>
+                    <path d="M300,255 Q390,232 490,210" fill="none" stroke="#3e1020" stroke-width="1.2" stroke-dasharray="4,6" opacity="0.7"/>
+
+                    <!-- 범례 -->
+                    <rect x="620" y="260" width="170" height="85" rx="4" fill="rgba(8,6,8,0.9)" stroke="#2e1f2e" stroke-width="1"/>
+                    <text x="634" y="278" fill="#6a5a72" font-size="9.5" font-family="monospace" letter-spacing="1">— 범례</text>
+                    <circle cx="636" cy="293" r="5" fill="#c89840" stroke="#e8b860" stroke-width="1"/>
+                    <text x="646" y="297" fill="#c4bcc8" font-size="9.5" font-family="'Segoe UI',sans-serif">주요 도시</text>
+                    <polygon points="636,307 641,298 646,307 641,316" fill="none" stroke="#c04060" stroke-width="1.5"/>
+                    <text x="654" y="311" fill="#c4bcc8" font-size="9.5" font-family="'Segoe UI',sans-serif">목표 지점</text>
+                    <circle cx="636" cy="325" r="4" fill="#a060c0" stroke="#c080e0" stroke-width="1"/>
+                    <text x="646" y="329" fill="#c4bcc8" font-size="9.5" font-family="'Segoe UI',sans-serif">마법 도시</text>
+
+                    <!-- 제목 -->
+                    <text x="30" y="335" fill="#2e1f4e" font-size="11" font-family="monospace" letter-spacing="2">VARN CONTINENT — EXPLORATION MAP</text>
+                </svg>
+            </div>
+        </div>
+
+        <!-- 직업 선택 -->
+        <div class="section">
+            <div class="section-title">⚔️ 파티 구성 — 직업 선택</div>
+            <div class="intro-body" style="margin-bottom:16px;">
+                <p>모험은 <strong>최대 6인</strong>의 파티로 시작됩니다. 인간·엘프·드워프·
+                놈·하프-오크 중 종족을 선택하고, 아래 8가지 직업 중 원하는 조합으로 파티를 꾸리세요.</p>
+            </div>
+            <div class="class-grid">
+                <div class="class-card">
+                    <div class="class-icon">🗡️</div>
+                    <div class="class-name">나이트 (Knight)</div>
+                    <div class="class-tag">근접 전투</div>
+                    <div class="class-desc">최고의 AC와 HP를 자랑하는 전방 탱커. 마법은 사용 불가.</div>
+                </div>
+                <div class="class-card">
+                    <div class="class-icon">🏹</div>
+                    <div class="class-name">팔라딘 (Paladin)</div>
+                    <div class="class-tag">근접 + 클레릭 마법</div>
+                    <div class="class-desc">검과 신성 마법을 겸비. 파티의 핵심 버퍼.</div>
+                </div>
+                <div class="class-card">
+                    <div class="class-icon">🏔️</div>
+                    <div class="class-name">아처 (Archer)</div>
+                    <div class="class-tag">원거리 + 소서러 마법</div>
+                    <div class="class-desc">후반 강력한 마법과 원거리 공격을 병행.</div>
+                </div>
+                <div class="class-card">
+                    <div class="class-icon">🗺️</div>
+                    <div class="class-name">레인저 (Ranger)</div>
+                    <div class="class-tag">탐험 특화</div>
+                    <div class="class-desc">야외 생존과 탐색에 능숙. 균형잡힌 만능 캐릭터.</div>
+                </div>
+                <div class="class-card">
+                    <div class="class-icon">🔥</div>
+                    <div class="class-name">소서러 (Sorcerer)</div>
+                    <div class="class-tag">공격 마법</div>
+                    <div class="class-desc">파이어볼·번개 등 강력한 공격 주문의 달인.</div>
+                </div>
+                <div class="class-card">
+                    <div class="class-icon">✨</div>
+                    <div class="class-name">클레릭 (Cleric)</div>
+                    <div class="class-tag">회복 마법</div>
+                    <div class="class-desc">부활·회복·강화 주문으로 파티를 지탱하는 치유사.</div>
+                </div>
+                <div class="class-card">
+                    <div class="class-icon">🔓</div>
+                    <div class="class-name">로그 (Robber)</div>
+                    <div class="class-tag">도적 / 함정 해제</div>
+                    <div class="class-desc">자물쇠 따기·함정 탐지가 특기. 보물 습득 보너스.</div>
+                </div>
+                <div class="class-card">
+                    <div class="class-icon">📖</div>
+                    <div class="class-name">닌자 (Ninja)</div>
+                    <div class="class-tag">암살 / 고급 유닛</div>
+                    <div class="class-desc">극히 높은 성장 조건이지만 최강의 단일 전투력.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 한국어판 특징 -->
+        <div class="section">
+            <div class="section-title">🌐 한국어 패치 특징</div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔤</div>
+                    <div>
+                        <div class="feature-title">TTF 한글 렌더링</div>
+                        <div class="feature-desc">Galmuri9.ttf 기반 비트맵 폰트 대체. 깨짐 없는 완전한 한글 출력.</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚔️</div>
+                    <div>
+                        <div class="feature-title">전투 화면 UI</div>
+                        <div class="feature-desc">전투 패널 한글화, 몬스터명 번역, 상태 텍스트 완전 현지화.</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🗺️</div>
+                    <div>
+                        <div class="feature-title">지명 완전 번역</div>
+                        <div class="feature-desc">도시·던전·지역명을 포함한 지도 관련 텍스트 전체 번역.</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧪</div>
+                    <div>
+                        <div class="feature-title">아이템·마법 번역</div>
+                        <div class="feature-desc">인벤토리·상점 아이템명, 주문서 이름까지 번역 적용.</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <div>
+                        <div class="feature-title">ScummVM 네이티브</div>
+                        <div class="feature-desc">공식 ScummVM MM1 엔진 직접 빌드. 별도 런처 불필요.</div>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🐍</div>
+                    <div>
+                        <div class="feature-title">Python 번역 파이프라인</div>
+                        <div class="feature-desc">TRS 추출·병합·자동 번역 스크립트로 일관된 번역 품질 유지.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 장단점 -->
+        <div class="section">
+            <div class="section-title">👍 장단점 평가</div>
+            <div class="pros-cons">
+                <div class="pc-card pros">
+                    <h3>✦ 강점 (매력 포인트)</h3>
+                    <ul>
+                        <li>거대한 오픈 월드 — 제한 없는 자유 탐험</li>
+                        <li>복잡한 캐릭터 성장과 파티 시너지</li>
+                        <li>수백 개의 숨겨진 메시지와 힌트 퍼즐</li>
+                        <li>클래식 CRPG의 원형, 역사적 가치</li>
+                        <li>ScummVM으로 현대 OS에서 안정 구동</li>
+                    </ul>
+                </div>
+                <div class="pc-card cons">
+                    <h3>▲ 주의 사항</h3>
+                    <ul>
+                        <li>맵 없이는 극도로 복잡한 던전 구조</li>
+                        <li>고난이도 — 파티 전멸 빈번</li>
+                        <li>일부 한글 UI 레이아웃 현재 작업 중</li>
+                        <li>초반 진입 장벽이 높음 (매뉴얼 필수)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /tab-intro -->
+
+    <!-- ─── TAB: 스토리 ─── -->
+    <div id="tab-story" class="tab-panel">
+
+        <!-- 스토리 요약 -->
+        <div class="section">
+            <div class="section-title">📜 스토리 배경</div>
+            <div class="story-summary">
+                <p>
+                    우주 한 편, 고대 문명과 마법이 뒤섞인 대륙 <strong>밴(Varn)</strong>은
+                    평화롭지 않다. 어둠의 군주 <em>샬루(Sheltem)</em>는 대륙의 내부
+                    성소를 향해 세력을 뻗치고 있으며, 각지의 마을과 던전에 마물들이 넘쳐난다.
+                </p>
+                <p>
+                    시작 마을 <strong>소르피갈(Sorpigal)</strong>의 한 주점에서, 여섯 명의
+                    모험가는 우연히 운명을 함께하게 된다. 그들의 목적은 하나 — 대륙 어딘가에
+                    숨겨진 <strong>내부 성소(Inner Sanctum)</strong>의 비밀을 밝히는 것.
+                </p>
+                <p>
+                    여정은 마을 외곽의 얕은 던전에서 시작되지만, 차츰 드러나는 단서들은
+                    밴이 단순한 판타지 대륙이 아님을 암시한다. 고대 로봇, 우주선의 파편,
+                    수수께끼의 텔레포터…
+                    <em>이 세계의 진실</em>은 상상을 초월할 것이다.
+                </p>
+            </div>
+        </div>
+
+        <!-- 주요 장면 SVG -->
+        <div class="section">
+            <div class="section-title">🎬 주요 장면</div>
+            <div class="story-scenes">
+
+                <!-- Scene 01 — 소르피갈 출발 -->
+                <div class="scene-block">
+                    <div class="scene-svg-wrap">
+                        <svg viewBox="0 0 460 270" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="s1sky" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#120820"/>
+                                    <stop offset="60%" stop-color="#1a0c28"/>
+                                    <stop offset="100%" stop-color="#0a0814"/>
+                                </linearGradient>
+                                <radialGradient id="s1moon" cx="75%" cy="18%" r="15%">
+                                    <stop offset="0%" stop-color="#ffe8a0" stop-opacity="0.9"/>
+                                    <stop offset="50%" stop-color="#c89840" stop-opacity="0.2"/>
+                                    <stop offset="100%" stop-color="transparent"/>
+                                </radialGradient>
+                            </defs>
+                            <rect width="460" height="270" fill="url(#s1sky)"/>
+                            <rect width="460" height="270" fill="url(#s1moon)"/>
+                            <!-- 별 -->
+                            <circle cx="40" cy="30" r="1" fill="#c89840" opacity="0.8"/>
+                            <circle cx="120" cy="18" r="1.2" fill="#a060c0" opacity="0.7"/>
+                            <circle cx="200" cy="35" r="0.8" fill="#fff" opacity="0.6"/>
+                            <circle cx="310" cy="22" r="1" fill="#c89840" opacity="0.9"/>
+                            <circle cx="180" cy="12" r="0.7" fill="#fff" opacity="0.5"/>
+                            <!-- 달 -->
+                            <circle cx="350" cy="48" r="22" fill="#ffe8a0" opacity="0.18"/>
+                            <circle cx="350" cy="48" r="16" fill="#fff0c0" opacity="0.28"/>
+                            <!-- 마을 실루엣 -->
+                            <rect x="0" y="185" width="460" height="85" fill="#080614"/>
+                            <!-- 건물들 -->
+                            <rect x="30" y="165" width="45" height="40" fill="#100c1c" stroke="#1e1430" stroke-width="1"/>
+                            <polygon points="30,165 52,140 75,165" fill="#0e0a18"/>
+                            <rect x="41" y="175" width="12" height="14" fill="#c89840" opacity="0.5"/>
+                            <rect x="100" y="150" width="55" height="55" fill="#0e0a18" stroke="#1e1430" stroke-width="1"/>
+                            <polygon points="100,150 127,120 155,150" fill="#0a0814"/>
+                            <rect x="112" y="165" width="14" height="18" fill="#c89840" opacity="0.4"/>
+                            <!-- 여관 간판 효과 -->
+                            <rect x="145" y="158" width="8" height="4" fill="#c89840" opacity="0.7" rx="1"/>
+                            <rect x="200" y="170" width="40" height="30" fill="#100c1c" stroke="#1e1430" stroke-width="1"/>
+                            <polygon points="200,170 220,148 240,170" fill="#0e0a18"/>
+                            <!-- 모험가 실루엣 -->
+                            <ellipse cx="295" cy="230" rx="6" ry="8" fill="#1a0c28"/>
+                            <rect x="289" y="238" width="12" height="20" fill="#1a0c28"/>
+                            <line x1="301" y1="242" x2="316" y2="238" stroke="#2e1f3e" stroke-width="1.5"/>
+                            <ellipse cx="325" cy="230" rx="6" ry="8" fill="#1a0c28"/>
+                            <rect x="319" y="238" width="12" height="20" fill="#1a0c28"/>
+                            <ellipse cx="358" cy="228" rx="5" ry="7" fill="#1a0c28"/>
+                            <rect x="353" y="235" width="10" height="20" fill="#1a0c28"/>
+                            <!-- 지평선 빛 -->
+                            <path d="M0,185 Q230,175 460,185" fill="none" stroke="#c89840" stroke-width="0.6" opacity="0.3"/>
+                            <!-- 대화 박스 -->
+                            <rect x="15" y="198" width="255" height="56" fill="#04020a" stroke="#2e1f4e" stroke-width="1.2" rx="3"/>
+                            <text x="28" y="216" fill="#a060c0" font-size="9" font-family="monospace" letter-spacing="1">소르피갈 여관주인</text>
+                            <text x="28" y="232" fill="#f0eaf4" font-size="10.5" font-family="'Segoe UI',sans-serif">운명이 그대들을 기다리고 있소.</text>
+                            <text x="28" y="247" fill="#f0eaf4" font-size="10.5" font-family="'Segoe UI',sans-serif">밴의 비밀을 밝혀내시오.</text>
+                        </svg>
+                    </div>
+                    <div class="scene-info">
+                        <div class="scene-num">Scene 01 · 시작</div>
+                        <div class="scene-title">소르피갈 — 여정의 출발점</div>
+                        <div class="scene-desc">
+                            달빛 아래 조용한 항구 마을 소르피갈. 여관의 불빛이 꺼져가는 밤,
+                            운명처럼 한자리에 모인 <strong>여섯 모험가</strong>는 아무도 돌아오지
+                            못했다는 내부 성소를 향해 첫 발을 내딛는다.
+                        </div>
+                        <span class="scene-tag">오픈 월드 · 자유 탐험 시작</span>
+                    </div>
+                </div>
+
+                <!-- Scene 02 — 던전 탐험 -->
+                <div class="scene-block reverse">
+                    <div class="scene-svg-wrap">
+                        <svg viewBox="0 0 460 270" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <radialGradient id="s2torch" cx="50%" cy="45%" r="55%">
+                                    <stop offset="0%" stop-color="#c89840" stop-opacity="0.25"/>
+                                    <stop offset="70%" stop-color="#7a3810" stop-opacity="0.1"/>
+                                    <stop offset="100%" stop-color="transparent"/>
+                                </radialGradient>
+                            </defs>
+                            <rect width="460" height="270" fill="#020108"/>
+                            <rect width="460" height="270" fill="url(#s2torch)"/>
+                            <!-- 돌벽 -->
+                            <rect x="0" y="0" width="80" height="270" fill="#0c0818"/>
+                            <rect x="380" y="0" width="80" height="270" fill="#0c0818"/>
+                            <!-- 벽 석재 패턴 -->
+                            <g stroke="#1a1230" stroke-width="0.5" fill="none">
+                                <line x1="0" y1="45" x2="80" y2="45"/>
+                                <line x1="0" y1="90" x2="80" y2="90"/>
+                                <line x1="0" y1="135" x2="80" y2="135"/>
+                                <line x1="0" y1="180" x2="80" y2="180"/>
+                                <line x1="0" y1="225" x2="80" y2="225"/>
+                                <line x1="40" y1="0" x2="40" y2="45"/>
+                                <line x1="40" y1="90" x2="40" y2="135"/>
+                                <line x1="40" y1="180" x2="40" y2="225"/>
+                                <line x1="380" y1="45" x2="460" y2="45"/>
+                                <line x1="380" y1="90" x2="460" y2="90"/>
+                                <line x1="380" y1="135" x2="460" y2="135"/>
+                                <line x1="380" y1="180" x2="460" y2="180"/>
+                                <line x1="420" y1="0" x2="420" y2="45"/>
+                                <line x1="420" y1="90" x2="420" y2="135"/>
+                            </g>
+                            <!-- 천장 -->
+                            <rect x="80" y="0" width="300" height="40" fill="#0a0618"/>
+                            <!-- 바닥 -->
+                            <rect x="80" y="230" width="300" height="40" fill="#080414"/>
+                            <!-- 바닥 타일 -->
+                            <g stroke="#140c20" stroke-width="0.5" fill="none">
+                                <line x1="80" y1="230" x2="380" y2="230"/>
+                                <line x1="155" y1="230" x2="155" y2="270"/>
+                                <line x1="230" y1="230" x2="230" y2="270"/>
+                                <line x1="305" y1="230" x2="305" y2="270"/>
+                            </g>
+                            <!-- 횃불 왼쪽 -->
+                            <rect x="73" y="90" width="7" height="22" fill="#4a2010" rx="1"/>
+                            <ellipse cx="76" cy="88" rx="5" ry="9" fill="#e08820" opacity="0.9"/>
+                            <ellipse cx="76" cy="86" rx="3" ry="5" fill="#ffe050" opacity="0.8"/>
+                            <!-- 횃불 오른쪽 -->
+                            <rect x="380" y="90" width="7" height="22" fill="#4a2010" rx="1"/>
+                            <ellipse cx="384" cy="88" rx="5" ry="9" fill="#e08820" opacity="0.9"/>
+                            <ellipse cx="384" cy="86" rx="3" ry="5" fill="#ffe050" opacity="0.8"/>
+                            <!-- 원근감 복도 -->
+                            <path d="M80,40 L190,90 L190,230 L80,230Z" fill="#060412" opacity="0.8"/>
+                            <path d="M380,40 L270,90 L270,230 L380,230Z" fill="#060412" opacity="0.8"/>
+                            <rect x="190" y="90" width="80" height="140" fill="#100a18"/>
+                            <!-- 원거리 문 -->
+                            <rect x="200" y="100" width="60" height="110" fill="#080412" stroke="#2e1f4e" stroke-width="1.5" rx="2"/>
+                            <rect x="224" y="145" width="12" height="12" fill="#c89840" opacity="0.4" rx="1"/>
+                            <!-- 몬스터 실루엣 (해골 워리어) -->
+                            <ellipse cx="230" cy="165" rx="14" ry="16" fill="#1a0c28"/>
+                            <ellipse cx="230" cy="162" rx="10" ry="12" fill="#120820"/>
+                            <!-- 눈 빛 -->
+                            <circle cx="225" cy="160" r="2.5" fill="#c04060" opacity="0.9"/>
+                            <circle cx="235" cy="160" r="2.5" fill="#c04060" opacity="0.9"/>
+                            <rect x="220" y="178" width="20" height="35" fill="#1a0c28"/>
+                            <line x1="220" y1="188" x2="195" y2="175" stroke="#2e1f3e" stroke-width="2"/>
+                            <line x1="240" y1="188" x2="262" y2="175" stroke="#2e1f3e" stroke-width="2"/>
+                            <!-- 대화 박스 -->
+                            <rect x="15" y="198" width="270" height="56" fill="#04020a" stroke="#4a1830" stroke-width="1.2" rx="3"/>
+                            <text x="28" y="216" fill="#c04060" font-size="9" font-family="monospace" letter-spacing="1">⚔ 전투 발생</text>
+                            <text x="28" y="232" fill="#f0eaf4" font-size="10.5" font-family="'Segoe UI',sans-serif">해골 워리어가 나타났다!</text>
+                            <text x="28" y="247" fill="#c4bcc8" font-size="10" font-family="'Segoe UI',sans-serif">행동을 선택하시오: 공격 / 마법 / 도망</text>
+                        </svg>
+                    </div>
+                    <div class="scene-info">
+                        <div class="scene-num">Scene 02 · 전투</div>
+                        <div class="scene-title">던전 심층부 — 언데드와의 조우</div>
+                        <div class="scene-desc">
+                            어두운 복도, 횃불 하나가 전부인 지하 던전. 한 걸음씩 내딛을 때마다
+                            무언가 살아있는 것이 도사리고 있다. <strong>해골 워리어</strong>가
+                            퇴로를 막아선다. 소서러의 파이어볼이냐, 클레릭의 언데드 퇴치냐.
+                        </div>
+                        <span class="scene-tag">턴제 전투 · 6면 지하 던전</span>
+                    </div>
+                </div>
+
+                <!-- Scene 03 — 광야 탐험 -->
+                <div class="scene-block">
+                    <div class="scene-svg-wrap">
+                        <svg viewBox="0 0 460 270" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="s3sky" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#140a0c"/>
+                                    <stop offset="50%" stop-color="#200e14"/>
+                                    <stop offset="100%" stop-color="#2a1018"/>
+                                </linearGradient>
+                                <linearGradient id="s3ground" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#0e0c18"/>
+                                    <stop offset="100%" stop-color="#080610"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="460" height="270" fill="url(#s3sky)"/>
+                            <!-- 지평선 -->
+                            <rect x="0" y="150" width="460" height="120" fill="url(#s3ground)"/>
+                            <!-- 구름 / 연기 -->
+                            <ellipse cx="80" cy="70" rx="55" ry="22" fill="#1e0c18" opacity="0.6"/>
+                            <ellipse cx="140" cy="60" rx="40" ry="16" fill="#180a14" opacity="0.5"/>
+                            <ellipse cx="320" cy="80" rx="65" ry="20" fill="#1e0c1a" opacity="0.5"/>
+                            <!-- 성 실루엣 (Castle Doom) -->
+                            <rect x="160" y="80" width="140" height="90" fill="#0c0818" stroke="#1e1230" stroke-width="1"/>
+                            <!-- 탑들 -->
+                            <rect x="155" y="55" width="30" height="35" fill="#0c0818" stroke="#1e1230" stroke-width="1"/>
+                            <rect x="275" y="60" width="30" height="30" fill="#0c0818" stroke="#1e1230" stroke-width="1"/>
+                            <rect x="195" y="45" width="24" height="40" fill="#0c0818" stroke="#1e1230" stroke-width="1"/>
+                            <rect x="241" y="50" width="24" height="35" fill="#0c0818" stroke="#1e1230" stroke-width="1"/>
+                            <!-- 성벽 총안 -->
+                            <g fill="#0c0818">
+                                <rect x="160" y="76" width="8" height="10"/>
+                                <rect x="176" y="76" width="8" height="10"/>
+                                <rect x="192" y="76" width="8" height="10"/>
+                                <rect x="244" y="76" width="8" height="10"/>
+                                <rect x="260" y="76" width="8" height="10"/>
+                                <rect x="280" y="76" width="8" height="10"/>
+                            </g>
+                            <!-- 성 창문 불빛 -->
+                            <rect x="196" y="100" width="10" height="12" fill="#c04060" opacity="0.6" rx="1"/>
+                            <rect x="220" y="105" width="20" height="12" fill="#c04060" opacity="0.5" rx="1"/>
+                            <rect x="254" y="100" width="10" height="12" fill="#c04060" opacity="0.6" rx="1"/>
+                            <!-- 성 위 깃발 -->
+                            <line x1="207" y1="45" x2="207" y2="30" stroke="#2e1f3e" stroke-width="1"/>
+                            <polygon points="207,30 224,36 207,42" fill="#c04060" opacity="0.8"/>
+                            <!-- 광야 -->
+                            <path d="M0,150 Q115,140 230,148 Q345,155 460,145" fill="#0e0c18" stroke="#1a1428" stroke-width="0.5"/>
+                            <!-- 바위들 -->
+                            <ellipse cx="60" cy="175" rx="22" ry="12" fill="#100c18"/>
+                            <ellipse cx="55" cy="170" rx="16" ry="9" fill="#140e1c"/>
+                            <ellipse cx="390" cy="180" rx="25" ry="13" fill="#100c18"/>
+                            <!-- 파티 실루엣 -->
+                            <g fill="#1a0c28">
+                                <ellipse cx="110" cy="188" rx="5" ry="7"/>
+                                <rect x="105" y="195" width="10" height="18"/>
+                                <ellipse cx="128" cy="186" rx="5" ry="7"/>
+                                <rect x="123" y="193" width="10" height="18"/>
+                                <ellipse cx="145" cy="189" rx="5" ry="7"/>
+                                <rect x="140" y="196" width="10" height="18"/>
+                            </g>
+                            <!-- 마나 이펙트 (캐스팅) -->
+                            <circle cx="143" cy="182" r="6" fill="none" stroke="#a060c0" stroke-width="1.2" opacity="0.8"/>
+                            <circle cx="143" cy="182" r="10" fill="none" stroke="#a060c0" stroke-width="0.6" opacity="0.4"/>
+                            <!-- 대화 박스 -->
+                            <rect x="15" y="220" width="265" height="40" fill="#04020a" stroke="#2e1f4e" stroke-width="1.2" rx="3"/>
+                            <text x="28" y="236" fill="#a060c0" font-size="9" font-family="monospace" letter-spacing="1">지도</text>
+                            <text x="28" y="251" fill="#f0eaf4" font-size="10.5" font-family="'Segoe UI',sans-serif">저곳이 캐슬 둠이다. 함부로 접근 말 것.</text>
+                        </svg>
+                    </div>
+                    <div class="scene-info">
+                        <div class="scene-num">Scene 03 · 탐험</div>
+                        <div class="scene-title">캐슬 둠 — 광야의 요새</div>
+                        <div class="scene-desc">
+                            광막한 황야를 가로질러 보이는 검은 성채, <strong>캐슬 둠</strong>.
+                            강력한 마물이 지키는 이 요새 깊숙이 중요한 단서가 숨겨져 있다.
+                            파티의 레벨이 충분히 높아지기 전까지는 함부로 문을 두드리면
+                            안 된다.
+                        </div>
+                        <span class="scene-tag">오픈 월드 · 고난이도 지역</span>
+                    </div>
+                </div>
+
+                <!-- Scene 04 — 내부 성소 -->
+                <div class="scene-block reverse">
+                    <div class="scene-svg-wrap">
+                        <svg viewBox="0 0 460 270" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <radialGradient id="s4core" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#4020a0" stop-opacity="0.7"/>
+                                    <stop offset="50%" stop-color="#200840" stop-opacity="0.4"/>
+                                    <stop offset="100%" stop-color="transparent"/>
+                                </radialGradient>
+                                <radialGradient id="s4outer" cx="50%" cy="50%" r="70%">
+                                    <stop offset="0%" stop-color="#c04060" stop-opacity="0.15"/>
+                                    <stop offset="100%" stop-color="transparent"/>
+                                </radialGradient>
+                            </defs>
+                            <rect width="460" height="270" fill="#020108"/>
+                            <rect width="460" height="270" fill="url(#s4outer)"/>
+                            <!-- 마법진 -->
+                            <circle cx="230" cy="135" r="100" fill="none" stroke="#a060c0" stroke-width="0.8" opacity="0.4"/>
+                            <circle cx="230" cy="135" r="80" fill="none" stroke="#c04060" stroke-width="0.6" opacity="0.3"/>
+                            <circle cx="230" cy="135" r="60" fill="none" stroke="#a060c0" stroke-width="1" opacity="0.5"/>
+                            <!-- 마법진 내부 -->
+                            <rect width="460" height="270" fill="url(#s4core)"/>
+                            <!-- 별형 문양 -->
+                            <path d="M230,55 L244,107 L296,107 L253,138 L268,190 L230,160 L192,190 L207,138 L164,107 L216,107Z"
+                                  fill="none" stroke="#c89840" stroke-width="1.2" opacity="0.5"/>
+                            <!-- 중앙 오벨리스크 -->
+                            <rect x="215" y="80" width="30" height="120" fill="#100820" stroke="#2e1f4e" stroke-width="1.5"/>
+                            <polygon points="215,80 230,55 245,80" fill="#140a24" stroke="#3e1f5e" stroke-width="1"/>
+                            <!-- 오벨리스크 룬 문자 -->
+                            <g fill="none" stroke="#a060c0" stroke-width="0.8" opacity="0.6">
+                                <line x1="222" y1="95" x2="238" y2="95"/>
+                                <path d="M222,95 L230,108 L238,95"/>
+                                <line x1="222" y1="118" x2="238" y2="118"/>
+                                <path d="M222,118 L230,131 L238,118"/>
+                                <line x1="222" y1="142" x2="238" y2="142"/>
+                                <line x1="225" y1="155" x2="235" y2="170"/>
+                                <line x1="235" y1="155" x2="225" y2="170"/>
+                            </g>
+                            <!-- 오벨리스크 빛 -->
+                            <rect x="228" y="80" width="4" height="120" fill="#c04060" opacity="0.2"/>
+                            <ellipse cx="230" cy="60" rx="6" ry="10" fill="#c89840" opacity="0.4"/>
+                            <!-- 부유하는 크리스탈 -->
+                            <polygon points="130,90 145,75 160,90 145,105" fill="none" stroke="#4080c0" stroke-width="1.2" opacity="0.7"/>
+                            <polygon points="300,80 315,65 330,80 315,95" fill="none" stroke="#c04060" stroke-width="1.2" opacity="0.7"/>
+                            <polygon points="90,160 105,145 120,160 105,175" fill="none" stroke="#a060c0" stroke-width="1" opacity="0.6"/>
+                            <polygon points="340,170 355,155 370,170 355,185" fill="none" stroke="#c89840" stroke-width="1" opacity="0.6"/>
+                            <!-- 파티 실루엣 -->
+                            <g fill="#1a0c28" opacity="0.9">
+                                <ellipse cx="160" cy="215" rx="5" ry="7"/>
+                                <rect x="155" y="222" width="10" height="16"/>
+                                <ellipse cx="185" cy="212" rx="5" ry="7"/>
+                                <rect x="180" y="219" width="10" height="16"/>
+                                <ellipse cx="210" cy="213" rx="5" ry="7"/>
+                                <rect x="205" y="220" width="10" height="16"/>
+                                <ellipse cx="250" cy="213" rx="5" ry="7"/>
+                                <rect x="245" y="220" width="10" height="16"/>
+                                <ellipse cx="275" cy="212" rx="5" ry="7"/>
+                                <rect x="270" y="219" width="10" height="16"/>
+                                <ellipse cx="300" cy="215" rx="5" ry="7"/>
+                                <rect x="295" y="222" width="10" height="16"/>
+                            </g>
+                            <!-- 대화 박스 -->
+                            <rect x="15" y="235" width="290" height="28" fill="#04020a" stroke="#4020a0" stroke-width="1.2" rx="3"/>
+                            <text x="28" y="254" fill="#c89840" font-size="10.5" font-family="'Segoe UI',sans-serif">내부 성소의 문이 열린다… 진실을 마주하라.</text>
+                        </svg>
+                    </div>
+                    <div class="scene-info">
+                        <div class="scene-num">Scene 04 · 클라이맥스</div>
+                        <div class="scene-title">내부 성소 — 밴의 비밀</div>
+                        <div class="scene-desc">
+                            모든 퍼즐이 풀리고, 모든 던전이 정복되고, 마침내 도달하는
+                            <strong>내부 성소</strong>. 이곳에서 밴이란 무엇인지,
+                            샬루가 무엇을 원하는지, 그리고 이 세계의 <em>진짜 정체</em>가
+                            드러난다.
+                        </div>
+                        <span class="scene-tag">최종 목표 · 스토리 클라이맥스</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div><!-- /tab-story -->
+
+    <!-- ─── TAB: 다운로드/설치 ─── -->
+    <div id="tab-install" class="tab-panel">
+
+        <div class="section">
+            <div class="section-title">📦 다운로드</div>
+            <div class="notice">
+                <strong>⚠️ 준비 중:</strong> 패치가 아직 알파 단계입니다. 일부 텍스트가 미번역 상태이거나
+                레이아웃이 불완전할 수 있습니다. 버그 발견 시 방명록에 제보 부탁드립니다.
+            </div>
+            <div class="dl-bar">
+                <a href="#" class="dl-btn">
+                    <span class="dl-icon">⚙️</span>
+                    <span class="dl-text">
+                        <span class="dl-label">ScummVM 빌드 (필수)</span>
+                        <span class="dl-name">scummvm-mm1-ko-win64.zip</span>
+                    </span>
+                </a>
+                <a href="#" class="dl-btn">
+                    <span class="dl-icon">📄</span>
+                    <span class="dl-text">
+                        <span class="dl-label">번역 리소스 팩</span>
+                        <span class="dl-name">mm1-korean-patch-v0.3.0.zip</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">📁 패치 구성 파일</div>
+            <div class="file-list">
+                <div class="file-item">
+                    <span class="file-icon">⚙️</span>
+                    <div>
+                        <div class="file-name">scummvm.exe (MM1 엔진 포함)</div>
+                        <div class="file-desc">한글 TTF 렌더링 + UI 수정이 적용된 ScummVM 커스텀 빌드. MSYS2/MinGW64 환경에서 컴파일.</div>
+                    </div>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">📄</span>
+                    <div>
+                        <div class="file-name">koreans.trs</div>
+                        <div class="file-desc">인게임 UI 문자열, 나레이션, 시스템 메시지 번역 파일. TRS 포맷.</div>
+                    </div>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">📄</span>
+                    <div>
+                        <div class="file-name">KoreanItems.trs</div>
+                        <div class="file-desc">아이템·무기·방어구·마법 이름 번역 파일.</div>
+                    </div>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">🗺️</span>
+                    <div>
+                        <div class="file-name">KoreanMapNames.trs</div>
+                        <div class="file-desc">도시·지역·던전 지명 번역 파일. 지도 팝업에 표시.</div>
+                    </div>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">🔤</span>
+                    <div>
+                        <div class="file-name">Galmuri9.ttf</div>
+                        <div class="file-desc">한글 렌더링에 사용되는 비트맵 스타일 TTF 폰트.</div>
+                    </div>
+                </div>
+                <div class="file-item">
+                    <span class="file-icon">🛠️</span>
+                    <div>
+                        <div class="file-name">korean.ini</div>
+                        <div class="file-desc">ScummVM 한글 설정 파일. 폰트 경로·크기·언어 코드 설정 포함.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🛠️ 설치 방법</div>
+            <div class="notice">
+                <strong>필수 조건:</strong> Might and Magic I Enhanced 원본 게임 파일이 필요합니다.
+                <a href="https://www.gog.com" target="_blank">GOG.com</a> 등에서 정식 구매 후 적용하세요.
+            </div>
+            <ul class="tip-list">
+                <li>
+                    <strong>1단계 — 게임 폴더 준비:</strong> MM1 Enhanced 원본 폴더에 위의 패치 파일들을 덮어씌우세요.
+                    <code>scummvm.exe</code>, <code>*.trs</code>, <code>Galmuri9.ttf</code>, <code>korean.ini</code>
+                </li>
+                <li>
+                    <strong>2단계 — ScummVM 실행:</strong> 커스텀 <code>scummvm.exe</code>를 실행하고,
+                    게임을 목록에 추가합니다. 엔진 ID: <code>mm:mm1</code>
+                </li>
+                <li>
+                    <strong>3단계 — 언어 설정:</strong> ScummVM 환경설정 → 게임 탭 → Language를 <strong>Korean</strong>으로 선택.
+                </li>
+                <li>
+                    <strong>4단계 — 한글 확인:</strong> 게임 시작 후 캐릭터 생성 화면에서 한글이 정상 출력되면 완료.
+                    문제가 있으면 <code>korean.ini</code>의 폰트 경로를 확인하세요.
+                </li>
+            </ul>
+
+            <div style="margin-top:20px">
+                <div class="section-title" style="font-size:0.95rem; margin-bottom:14px;">⚙️ korean.ini 예시</div>
+                <div class="ini-box">
+<span class="ini-section">[Korean]</span><br>
+<span class="ini-comment">; Galmuri9 TTF 폰트 경로</span><br>
+<span class="ini-key">FontPath</span> = <span class="ini-val">./Galmuri9.ttf</span><br>
+<span class="ini-key">FontSize</span> = <span class="ini-val">16</span><br>
+<span class="ini-comment">; 번역 파일 경로</span><br>
+<span class="ini-key">TranslationPath</span> = <span class="ini-val">./</span><br>
+<span class="ini-key">Language</span> = <span class="ini-val">ko</span><br>
+<span class="ini-key">Encoding</span> = <span class="ini-val">UTF-8</span>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /tab-install -->
+
+    <!-- ─── TAB: 패치 이력 ─── -->
+    <div id="tab-history" class="tab-panel">
+
+        <div class="section">
+            <div class="section-title">📋 패치 버전 이력</div>
+            <div class="timeline">
+                <div class="tl-item latest">
+                    <div class="tl-ver">v0.3.0-alpha — 현재</div>
+                    <div class="tl-date">2026.06.27</div>
+                    <div class="tl-desc">아이템명·몬스터명 TRS 번역 적용. 지도 팝업 한글화. 전투 화면 UI 레이아웃 개선. Python trs_merge.py 파이프라인 안정화.</div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-ver">v0.2.0-alpha</div>
+                    <div class="tl-date">2026.05.14</div>
+                    <div class="tl-desc">Galmuri9.ttf TTF 렌더링 통합. 캐릭터 생성·능력치 화면 한글 출력 구현. globals.h 한국어 초기화 로직 추가.</div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-ver">v0.1.0-alpha</div>
+                    <div class="tl-date">2026.04.02</div>
+                    <div class="tl-desc">ScummVM MM1 엔진 한글 지원 기초 작업. character_base.cpp 폰트 패치, TRS 파일 구조 분석 시작.</div>
+                </div>
+                <div class="tl-item">
+                    <div class="tl-ver">프로젝트 시작</div>
+                    <div class="tl-date">2026.03.10</div>
+                    <div class="tl-desc">ScummVM MM1 Enhanced 엔진 코드 분석 시작. Future Wars / Stealth Affair 한글화 경험을 기반으로 MM1 적용 방법론 수립.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 번역 진행률 -->
+        <div class="section">
+            <div class="section-title">📊 번역 진행 현황</div>
+            <table class="progress-table">
+                <thead>
+                    <tr>
+                        <th>영역</th>
+                        <th>진행률</th>
+                        <th>바</th>
+                        <th>비고</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>UI 시스템 문자열</td>
+                        <td><span class="pct">85%</span></td>
+                        <td><div class="bar-wrap"><div class="bar-fill" style="width:85%"></div></div></td>
+                        <td style="font-size:0.82rem;color:var(--muted)">일부 동적 생성 문자열 미번역</td>
+                    </tr>
+                    <tr>
+                        <td>아이템 / 장비명</td>
+                        <td><span class="pct">90%</span></td>
+                        <td><div class="bar-wrap"><div class="bar-fill" style="width:90%"></div></td>
+                        <td style="font-size:0.82rem;color:var(--muted)">대부분 완료</td>
+                    </tr>
+                    <tr>
+                        <td>몬스터명</td>
+                        <td><span class="pct">95%</span></td>
+                        <td><div class="bar-wrap"><div class="bar-fill" style="width:95%"></div></td>
+                        <td style="font-size:0.82rem;color:var(--muted)">거의 완료</td>
+                    </tr>
+                    <tr>
+                        <td>지명 / 지도 텍스트</td>
+                        <td><span class="pct">80%</span></td>
+                        <td><div class="bar-wrap"><div class="bar-fill" style="width:80%"></div></td>
+                        <td style="font-size:0.82rem;color:var(--muted)">일부 지역 미완료</td>
+                    </tr>
+                    <tr>
+                        <td>마법 이름 / 설명</td>
+                        <td><span class="pct">70%</span></td>
+                        <td><div class="bar-wrap"><div class="bar-fill" style="width:70%"></div></td>
+                        <td style="font-size:0.82rem;color:var(--muted)">진행 중</td>
+                    </tr>
+                    <tr>
+                        <td>전투 메시지</td>
+                        <td><span class="pct">75%</span></td>
+                        <td><div class="bar-wrap"><div class="bar-fill" style="width:75%"></div></td>
+                        <td style="font-size:0.82rem;color:var(--muted)">진행 중</td>
+                    </tr>
+                    <tr>
+                        <td>인게임 힌트 / 메모</td>
+                        <td><span class="pct">40%</span></td>
+                        <td><div class="bar-wrap"><div class="bar-fill" style="width:40%"></div></td>
+                        <td style="font-size:0.82rem;color:var(--muted)">대량 작업 필요</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div><!-- /tab-history -->
+
+    <!-- ─── TAB: 방명록 ─── -->
+    <div id="tab-guestbook" class="tab-panel">
+
+        <div class="section">
+            <div class="section-title">📖 방명록 · 버그 제보</div>
+
+            <div class="gb-form">
+                <h3>✍️ 글 남기기</h3>
+                <div class="gb-row">
+                    <div class="gb-field">
+                        <label>닉네임</label>
+                        <input type="text" id="gb-nick" placeholder="모험가의 이름">
+                    </div>
+                    <div class="gb-field">
+                        <label>유형</label>
+                        <select id="gb-type">
+                            <option value="guest">💬 방문 인사</option>
+                            <option value="bug">🐛 버그 제보</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="gb-row">
+                    <div class="gb-field" style="flex:1 1 100%">
+                        <label>내용</label>
+                        <textarea id="gb-body" rows="4" placeholder="남기실 말씀이나 발견한 버그를 적어주세요."></textarea>
+                    </div>
+                </div>
+                <div class="gb-actions">
+                    <button class="btn-cancel" onclick="clearForm()">초기화</button>
+                    <button class="btn-submit" onclick="submitEntry()">⚔️ 기록하기</button>
+                </div>
+            </div>
+
+            <div class="gb-list" id="gb-list">
+                <div class="gb-entry type-guest">
+                    <div class="gb-entry-header">
+                        <span class="gb-nick">securityrimo</span>
+                        <span class="gb-badge badge-guest">방문</span>
+                        <span class="gb-date">2026.06.27</span>
+                    </div>
+                    <div class="gb-body">MM1 한국어판 소개 페이지를 개설했습니다. 아직 알파 단계라 많은 버그가 있을 수 있습니다. 번역 중 오류나 깨진 텍스트를 발견하시면 이곳에 제보해 주세요. 함께 완성해 가겠습니다. ⚔️</div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /tab-guestbook -->
+
+</div><!-- /container -->
+
+<footer>
+    <p>
+        <strong>Might and Magic I Enhanced — 한국어 패치</strong> ·
+        제작 <strong>securityrimo</strong> ·
+        비공식 팬 프로젝트
+    </p>
+    <p style="margin-top:6px">
+        원작: New World Computing (1986) · 엔진: ScummVM MM1 Enhanced ·
+        이 프로젝트는 수익을 목적으로 하지 않습니다
+    </p>
+</footer>
+
+<script>
+    /* ── 탭 전환 ── */
+    function switchTab(id, btn) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-' + id).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    /* ── 방명록 ── */
+    function submitEntry() {
+        const nick = document.getElementById('gb-nick').value.trim() || '익명의 모험가';
+        const type = document.getElementById('gb-type').value;
+        const body = document.getElementById('gb-body').value.trim();
+        if (!body) { alert('내용을 입력해 주세요.'); return; }
+
+        const entry = document.createElement('div');
+        entry.className = 'gb-entry type-' + type;
+
+        const typeLabel = type === 'bug' ? '🐛 버그' : '💬 방문';
+        const badgeClass = type === 'bug' ? 'badge-bug' : 'badge-guest';
+        const now = new Date();
+        const dateStr = now.getFullYear() + '.' +
+            String(now.getMonth()+1).padStart(2,'0') + '.' +
+            String(now.getDate()).padStart(2,'0');
+
+        entry.innerHTML = `
+            <div class="gb-entry-header">
+                <span class="gb-nick">${escHtml(nick)}</span>
+                <span class="gb-badge ${badgeClass}">${typeLabel}</span>
+                <span class="gb-date">${dateStr}</span>
+            </div>
+            <div class="gb-body">${escHtml(body)}</div>`;
+
+        const list = document.getElementById('gb-list');
+        list.insertBefore(entry, list.firstChild);
+        clearForm();
+    }
+
+    function clearForm() {
+        document.getElementById('gb-nick').value = '';
+        document.getElementById('gb-body').value = '';
+        document.getElementById('gb-type').value = 'guest';
+    }
+
+    function escHtml(str) {
+        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                  .replace(/"/g,'&quot;').replace(/\n/g,'<br>');
+    }
+</script>
+
+</body>
+</html>
